@@ -12,6 +12,7 @@ import lombok.experimental.FieldDefaults;
 @RequiredArgsConstructor
 @ToString
 public class PostsRequestBody {
-
-    //todo: 아아아
+    String sort_type;
+    Integer pages;
+    Integer content_count;
 }
