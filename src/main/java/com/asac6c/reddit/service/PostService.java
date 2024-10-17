@@ -6,12 +6,15 @@ import com.asac6c.reddit.dto.postDto.PostCreateResponseDto;
 import com.asac6c.reddit.dto.postDto.PostResponseDto;
 import com.asac6c.reddit.repository.PostRepository;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 
 @RequiredArgsConstructor
 @Service
+@FieldDefaults(makeFinal=true, level= AccessLevel.PRIVATE)
 public class PostService {
   PostRepository postRepository;
 

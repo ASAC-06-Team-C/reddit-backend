@@ -4,6 +4,7 @@ import com.asac6c.reddit.dto.postDto.DraftResponseDto;
 import com.asac6c.reddit.dto.postDto.PostCreateDto;
 import com.asac6c.reddit.dto.postDto.PostCreateResponseDto;
 import com.asac6c.reddit.dto.postDto.PostResponseDto;
+import com.asac6c.reddit.entity.Post;
 import com.asac6c.reddit.exception.PostCustomException;
 import com.asac6c.reddit.exception.PostExceptionType;
 import java.util.Comparator;
@@ -19,10 +20,10 @@ import org.springframework.stereotype.Repository;
 @FieldDefaults(makeFinal=true, level= AccessLevel.PRIVATE)
 @Repository
 public class PostRepository {
-  Map<Integer, Post> repositoryMap;
+  static Map<Integer, Post> repositoryMap;
 
-  public PostRepository() {
-    repositoryMap = new HashMap<>();
+  static {
+    repositoryMap = new HashMap<Integer, Post>();
   }
 
   private Integer postNumberGenerator() {
@@ -30,7 +31,7 @@ public class PostRepository {
         .stream()
         .max(Comparator.comparingInt(Integer::intValue))
         .orElse(0);
-    return current;
+    return current + 1;
   }
 
   public PostCreateResponseDto create(PostCreateDto request) {

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -38,14 +39,14 @@ public class PostController {
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
-  @GetMapping("/drafts/{post_no}")
+  @GetMapping("/drafts/{post_no}") // drafts/1
   public ResponseEntity<PostResponseDto> getDraft(@PathVariable Integer post_no) {
     PostResponseDto response = postService.getDraft(post_no);
     return ResponseEntity.ok(response);
   }
 
-  @GetMapping("/drafts/{user_no}")
-  public ResponseEntity<List<DraftResponseDto>> getDraftList(@PathVariable Integer user_no) {
+  @GetMapping("/drafts/")  // drafts/1
+  public ResponseEntity<List<DraftResponseDto>> getDraftList(@RequestParam Integer user_no) {
     List<DraftResponseDto> response = postService.getDraftListByUserId(user_no);
     return ResponseEntity.ok(response);
   }
@@ -59,5 +60,9 @@ public class PostController {
   // 2. draft에서 post로 전환할 때 (시간, 내용 변경)
   // 3.
 
+  // exception 따로 놔두고 branch 더 파서
+  // draft 서비스는 내가 추가할거ㅗ
+  // 기능이 더 생기는 쪽이라면 이슈 추가
+  //
 
 }

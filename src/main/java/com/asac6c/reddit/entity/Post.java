@@ -1,4 +1,4 @@
-package com.asac6c.reddit.repository;
+package com.asac6c.reddit.entity;
 
 import com.asac6c.reddit.dto.postDto.PostCreateDto;
 import java.util.Date;
@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 
 @Getter
 @RequiredArgsConstructor(access=AccessLevel.PRIVATE)
@@ -17,6 +18,8 @@ public class Post {
   String postContent;
   boolean postDraft;
   Date postWriteDate;
+//  @NonFinal
+//  static Integer lastId = 0;
 
 
   public static Post from (Integer postNo, PostCreateDto request) {
