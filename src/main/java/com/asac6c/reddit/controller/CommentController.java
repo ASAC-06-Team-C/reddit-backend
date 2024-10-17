@@ -35,19 +35,19 @@ public class CommentController {
   }
 
   @PutMapping
-  public ResponseEntity<String> updateComment(@RequestBody CommentRequestDTO.Update updateRequest) {
+  public ResponseEntity<String> updateComment(CommentRequestDTO.Update updateRequest) {
     commentService.updateComment(updateRequest);
     return ResponseEntity.ok("성공");
   }
 
   @DeleteMapping
-  public ResponseEntity<String> deleteComment(@RequestBody CommentRequestDTO.Delete deleteRequest) {
+  public ResponseEntity<String> deleteComment(CommentRequestDTO.Delete deleteRequest) {
     commentService.deleteComment(deleteRequest);
     return ResponseEntity.ok("성공");
   }
 
   @PostMapping("/vote")
-  public ResponseEntity<String> voteComment(@RequestBody CommentRequestDTO.Vote voteRequest) {
+  public ResponseEntity<String> voteComment(CommentRequestDTO.Vote voteRequest) {
     commentService.voteComment(voteRequest);
     return ResponseEntity.ok("성공");
   }
