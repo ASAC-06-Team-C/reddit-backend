@@ -1,5 +1,7 @@
 package com.asac6c.reddit.dto;
 
+import com.asac6c.reddit.entity.Post;
+import java.util.Date;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -18,5 +20,18 @@ public class PostResponseBody {
     String post_content;
     Integer post_vote_count;
     Integer post_comment_count;
-    Integer post_write_date;
+    Date post_write_date;
+
+    public static PostResponseBody of(Post post) {
+        return new PostResponseBody(
+                post.getUser_no(),
+                post.getPost_no(),
+                post.getCommunity_name(),
+                post.getPost_title(),
+                post.getPost_content(),
+                post.getPost_vote_count(),
+                post.getPost_comment_count(),
+                post.getPost_write_date()
+        );
+    }
 }
