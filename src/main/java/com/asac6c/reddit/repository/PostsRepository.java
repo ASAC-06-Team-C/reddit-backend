@@ -8,11 +8,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@Slf4j
 public class PostsRepository implements IPostsRepository<PostsResponseBody, PostsRequestBody> {
 
     static Map<Integer, Post> repositoryMap;
