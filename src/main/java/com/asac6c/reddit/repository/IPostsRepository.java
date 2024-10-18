@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface IPostsRepository<T, F> {
 
-    List<T> getPostContents(F request);
+    T getPostContents(F request);
 
 }
