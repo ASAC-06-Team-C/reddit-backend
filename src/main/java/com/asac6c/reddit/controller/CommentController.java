@@ -22,32 +22,32 @@ public class CommentController {
   private CommentService commentService;
 
   @GetMapping
-  public List<CommentResponseDTO> getComments(
-      @RequestBody CommentRequestDTO.Read readRequest) {
+  public List<CommentResponseDTO> getComments(@RequestBody
+  CommentRequestDTO.Read readRequest) {
     return commentService.getComments(readRequest);
   }
 
   @PostMapping
-  public ResponseEntity<String> createComment(
-      @RequestBody CommentRequestDTO.Create createRequest) {
+  public ResponseEntity<String> createComment(@RequestBody
+  CommentRequestDTO.Create createRequest) {
     commentService.createComment(createRequest);
     return ResponseEntity.ok("성공");
   }
 
   @PutMapping
-  public ResponseEntity<String> updateComment(CommentRequestDTO.Update updateRequest) {
+  public ResponseEntity<String> updateComment(@RequestBody CommentRequestDTO.Update updateRequest) {
     commentService.updateComment(updateRequest);
     return ResponseEntity.ok("성공");
   }
 
   @DeleteMapping
-  public ResponseEntity<String> deleteComment(CommentRequestDTO.Delete deleteRequest) {
+  public ResponseEntity<String> deleteComment(@RequestBody CommentRequestDTO.Delete deleteRequest) {
     commentService.deleteComment(deleteRequest);
     return ResponseEntity.ok("성공");
   }
 
   @PostMapping("/vote")
-  public ResponseEntity<String> voteComment(CommentRequestDTO.Vote voteRequest) {
+  public ResponseEntity<String> voteComment(@RequestBody CommentRequestDTO.Vote voteRequest) {
     commentService.voteComment(voteRequest);
     return ResponseEntity.ok("성공");
   }
