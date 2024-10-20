@@ -1,7 +1,7 @@
 package com.asac6c.reddit.controller;
 
-import com.asac6c.reddit.dto.postDto.DraftResponseDto;
-import com.asac6c.reddit.dto.postDto.PostCreateDto;
+import com.asac6c.reddit.dto.postDto.DraftSummaryResponseDto;
+import com.asac6c.reddit.dto.postDto.PostCreateRequestDto;
 import com.asac6c.reddit.dto.postDto.PostCreateResponseDto;
 import com.asac6c.reddit.dto.postDto.PostResponseDto;
 import com.asac6c.reddit.service.PostService;
@@ -28,41 +28,36 @@ public class PostController {
   PostService postService;
 
   @PostMapping("/posts")
-  public ResponseEntity<PostCreateResponseDto> create(@RequestBody PostCreateDto request) {
-    PostCreateResponseDto response = postService.create(request);
+  public ResponseEntity<PostCreateResponseDto> createPost(@RequestBody PostCreateRequestDto request) {
+    PostCreateResponseDto response = postService.createPost(request);
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
   @PostMapping("/drafts")
-  public ResponseEntity<PostCreateResponseDto> createDraft(@RequestBody PostCreateDto request) {
-    PostCreateResponseDto response = postService.create(request);
+  public ResponseEntity<PostCreateResponseDto> createDraft(@RequestBody PostCreateRequestDto request) {
+    PostCreateResponseDto response = postService.createPost(request);
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
-  @GetMapping("/drafts/{post_no}") // drafts/1
-  public ResponseEntity<PostResponseDto> getDraft(@PathVariable Integer post_no) {
-    PostResponseDto response = postService.getDraft(post_no);
-    return ResponseEntity.ok(response);
+  @GetMapping("/drafts/{post_no}")
+  public ResponseEntity<PostResponseDto> getDraftDetail(@PathVariable Integer post_no) {
+    PostResponseDto response = postService.getDraftDetailByUserId(post_no);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
 
-  @GetMapping("/drafts/")  // drafts/1
-  public ResponseEntity<List<DraftResponseDto>> getDraftList(@RequestParam Integer user_no) {
-    List<DraftResponseDto> response = postService.getDraftListByUserId(user_no);
-    return ResponseEntity.ok(response);
+  @GetMapping("/drafts/")
+  public ResponseEntity<List<DraftSummaryResponseDto>> getDraftList(@RequestParam Integer user_no) {
+    List<DraftSummaryResponseDto> response = postService.getDraftListByUserId(user_no);
+    return ResponseEntity.status(HttpStatus.OK).body(response);
   }
-
-  // customException이랑 customResponseEntity
-  // 날짜 추가햇는데 포맷 맞는지 확인.
   // 에러처리 통일필요함.
 
   // 쓰다보니까 draft 경우
   // 1. 이전에 받았던 draft를 받고 난 뒤에 update할때 (내용변경, false로)
   // 2. draft에서 post로 전환할 때 (시간, 내용 변경)
-  // 3.
 
-  // exception 따로 놔두고 branch 더 파서
   // draft 서비스는 내가 추가할거ㅗ
   // 기능이 더 생기는 쪽이라면 이슈 추가
-  //
+
 
 }

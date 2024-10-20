@@ -1,12 +1,11 @@
 package com.asac6c.reddit.entity;
 
-import com.asac6c.reddit.dto.postDto.PostCreateDto;
+import com.asac6c.reddit.dto.postDto.PostCreateRequestDto;
 import java.util.Date;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.NonFinal;
 
 @Getter
 @RequiredArgsConstructor(access=AccessLevel.PRIVATE)
@@ -22,7 +21,7 @@ public class Post {
 //  static Integer lastId = 0;
 
 
-  public static Post from (Integer postNo, PostCreateDto request) {
+  public static Post from (Integer postNo, PostCreateRequestDto request) {
     return new Post(
         request.getUserNo(),
         postNo,

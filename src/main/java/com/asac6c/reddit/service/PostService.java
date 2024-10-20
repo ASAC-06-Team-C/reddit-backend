@@ -1,9 +1,11 @@
 package com.asac6c.reddit.service;
 
-import com.asac6c.reddit.dto.postDto.DraftResponseDto;
-import com.asac6c.reddit.dto.postDto.PostCreateDto;
+import com.asac6c.reddit.dto.postDto.DraftSummaryResponseDto;
+import com.asac6c.reddit.dto.postDto.PostCreateRequestDto;
 import com.asac6c.reddit.dto.postDto.PostCreateResponseDto;
 import com.asac6c.reddit.dto.postDto.PostResponseDto;
+import com.asac6c.reddit.exception.PostCustomException;
+import com.asac6c.reddit.exception.PostExceptionType;
 import com.asac6c.reddit.repository.PostRepository;
 import java.util.List;
 import lombok.AccessLevel;
@@ -18,16 +20,18 @@ import org.springframework.stereotype.Service;
 public class PostService {
   PostRepository postRepository;
 
-  public PostCreateResponseDto create(PostCreateDto request) {
-    return postRepository.create(request);
+  public PostCreateResponseDto createPost(PostCreateRequestDto request) {
+    return PostCreateResponseDto.from(postRepository.createPost(request)) ;
   }
 
-  public PostResponseDto getDraft(Integer id) {
-    return postRepository.get(id);
+  public PostResponseDto getDraftDetailByUserId(Integer id) {
+    return postRepository.getDraftByPostId(id).map(PostResponseDto::from)
+        .orElseThrow(() -> new PostCustomException(PostExceptionType.POST_NOT_EXIST, id));
   }
 
-  public List<DraftResponseDto> getDraftListByUserId(Integer userId) {
-    return postRepository.getDraftListByUserId(userId);
+  public List<DraftSummaryResponseDto> getDraftListByUserId(Integer userId) {
+    return postRepository.getDraftListByUserId(userId).stream()
+        .map(DraftSummaryResponseDto::from)
+        .toList();
   }
-
 }

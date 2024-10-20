@@ -13,11 +13,11 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @RequiredArgsConstructor(access=AccessLevel.PRIVATE)
 @FieldDefaults(makeFinal=true, level= AccessLevel.PRIVATE)
-public class DraftResponseDto {
+public class DraftSummaryResponseDto {
   String postTitle;
   Date postWriteDate;
 
-  public static DraftResponseDto from (Post response) {
-    return new DraftResponseDto(response.getPostTitle(), response.getPostWriteDate());
+  public static DraftSummaryResponseDto from (Post response) {
+    return new DraftSummaryResponseDto(response.getPostTitle(), response.getPostWriteDate());
   }
 }

@@ -1,12 +1,7 @@
 package com.asac6c.reddit.repository;
 
-import com.asac6c.reddit.dto.postDto.DraftResponseDto;
-import com.asac6c.reddit.dto.postDto.PostCreateDto;
-import com.asac6c.reddit.dto.postDto.PostCreateResponseDto;
-import com.asac6c.reddit.dto.postDto.PostResponseDto;
+import com.asac6c.reddit.dto.postDto.PostCreateRequestDto;
 import com.asac6c.reddit.entity.Post;
-import com.asac6c.reddit.exception.PostCustomException;
-import com.asac6c.reddit.exception.PostExceptionType;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -34,24 +29,21 @@ public class PostRepository {
     return current + 1;
   }
 
-  public PostCreateResponseDto create(PostCreateDto request) {
+  public Post createPost(PostCreateRequestDto request) {
     Integer generatedNo = postNumberGenerator();
     Post createdPost = Post.from(generatedNo, request);
     repositoryMap.put(generatedNo, createdPost);
-    return new PostCreateResponseDto(generatedNo);
+    return createdPost;
   }
 
-  public PostResponseDto get(Integer postNo) {
-    Optional<Post> maybePost = Optional.ofNullable(repositoryMap.get(postNo));
-    return maybePost.map(PostResponseDto::from)
-        .orElseThrow(() -> new PostCustomException(PostExceptionType.POST_NOT_EXIST, postNo));
+  public Optional<Post> getDraftByPostId(Integer postNo) {
+    return Optional.ofNullable(repositoryMap.get(postNo));
   }
 
-  public List<DraftResponseDto> getDraftListByUserId(Integer id) {
+  public List<Post> getDraftListByUserId(Integer id) {
     return repositoryMap.values()
               .stream()
-              .filter((each) -> each.getUserNo().equals(id) )
-              .map(DraftResponseDto::from)
+              .filter((post) -> post.getUserNo().equals(id))
               .toList();
   }
 }
