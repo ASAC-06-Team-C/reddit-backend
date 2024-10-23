@@ -3,6 +3,8 @@ package com.asac6c.reddit.dto;
 import com.asac6c.reddit.entity.PostEntity;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -10,7 +12,7 @@ import java.util.Date;
 
 // 직렬화를 위해 Getter 필요
 @Getter
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @FieldDefaults(makeFinal = true ,level = AccessLevel.PRIVATE)
 public class PostGetResponseDto {
     Integer post_no;
