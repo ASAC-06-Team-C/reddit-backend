@@ -16,22 +16,32 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
-public class PostService {
+public class DraftService {
 
   PostRepository postRepository;
 
-  public PostCreateResponseDto createPost(PostCreateRequestDto request) {
+  public PostCreateResponseDto createDraft(PostCreateRequestDto request) {
     Post.PostBuilder tempPost = Post.instanceForCreate(request);
     Post generatedPost = postRepository.createPost(tempPost);
     return PostCreateResponseDto.from(generatedPost);
   }
 
+  public PostResponseDto getDraftDetailByPostNo(Integer id) {
+    return postRepository.getDraftByPostId(id).map(PostResponseDto::from)
+        .orElseThrow(() -> new PostCustomException(PostExceptionType.POST_NOT_EXIST, id));
+  }
 
-  public PostCreateResponseDto createPostByDraft(DraftUpsertRequestDto request) {
+  public List<DraftSummaryResponseDto> getDraftListByUserId(Integer userId) {
+    return postRepository.getDraftListByUserId(userId).stream()
+        .map(DraftSummaryResponseDto::from)
+        .toList();
+  }
+
+  public DraftSummaryResponseDto upsertDraftDetail(DraftUpsertRequestDto request) {
     Post postForUpsert = Post.instanceForUpsert(request);
-    return PostCreateResponseDto.from(postRepository.upsertPostDetail(postForUpsert));
+    return DraftSummaryResponseDto.from(postRepository.upsertPostDetail(postForUpsert));
   }
 }

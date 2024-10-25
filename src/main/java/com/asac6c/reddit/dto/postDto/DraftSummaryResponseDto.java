@@ -11,13 +11,14 @@ import lombok.experimental.FieldDefaults;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Getter
-@RequiredArgsConstructor(access=AccessLevel.PRIVATE)
-@FieldDefaults(makeFinal=true, level= AccessLevel.PRIVATE)
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class DraftSummaryResponseDto {
+
   String postTitle;
   Date postWriteDate;
 
-  public static DraftSummaryResponseDto from (Post response) {
+  public static DraftSummaryResponseDto from(Post response) {
     return new DraftSummaryResponseDto(response.getPostTitle(), response.getPostWriteDate());
   }
 }
