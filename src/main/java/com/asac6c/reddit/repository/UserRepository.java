@@ -1,10 +1,25 @@
 package com.asac6c.reddit.repository;
 
 import com.asac6c.reddit.entity.User;
+import org.springframework.stereotype.Repository;
 
-// Mock
-public interface UserRepository {
-    public void createUser(User user);
+import java.util.HashMap;
+import java.util.Map;
 
-    public User getUserById(Integer user_no);
+@Repository
+//Mock
+public class UserRepository implements IUserRepository {
+    private final Map<Integer, User> users = new HashMap<>();
+
+    private Integer userId = 0;
+
+    @Override
+    public void createUser(User user) {
+        users.put(userId++, user);
+    }
+
+    @Override
+    public User getUserById(Integer user_no) {
+        return users.get(user_no);
+    }
 }

@@ -2,11 +2,32 @@ package com.asac6c.reddit.repository;
 
 import com.asac6c.reddit.entity.Post;
 import com.asac6c.reddit.entity.PostVote;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
-public interface PostRepository {
-    public Post findPostById(Integer postId);
+import java.util.HashMap;
+import java.util.Map;
 
-    public void deletePostById(Integer postId);
+@RequiredArgsConstructor
+@Repository
+public class PostRepository implements IPostRepository {
+    private final Map<Integer, Post> posts = new HashMap<>();
+    private final Map<Integer, PostVote> postVotes = new HashMap<>();
+    private Integer postId = 0;
 
-    public Integer savePostVote(PostVote postVote);
+    @Override
+    public Post findPostById(Integer postId) {
+        return posts.get(postId);
+    }
+
+    @Override
+    public void deletePostById(Integer postId) {
+        posts.remove(postId);
+    }
+
+    @Override
+    public Integer savePostVote(PostVote postVoteEntity) {
+        PostVote postVote = postVotes.put(postId++, postVoteEntity);
+        return postVote.getPostVoteNo();
+    }
 }
