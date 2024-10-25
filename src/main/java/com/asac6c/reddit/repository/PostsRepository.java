@@ -1,17 +1,14 @@
 package com.asac6c.reddit.repository;
 
-import com.asac6c.reddit.dto.PostsRequestBody;
 import com.asac6c.reddit.dto.PostResponseBody;
-import com.asac6c.reddit.dto.PostsResponseBody;
+import com.asac6c.reddit.dto.PostsRequestBody;
 import com.asac6c.reddit.entity.Post;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import org.springframework.stereotype.Repository;
 
+import java.util.*;
+
 @Repository
-public class PostsRepository implements IPostsRepository<PostsResponseBody, PostsRequestBody> {
+public class PostsRepository implements IPostsRepository<List<PostResponseBody>, PostsRequestBody> {
 
     static Map<Integer, Post> repositoryMap;
 
@@ -37,18 +34,19 @@ public class PostsRepository implements IPostsRepository<PostsResponseBody, Post
      * @param request {String sort_type Integer pages Integer content_count}
      * @return PostsResponseBody
      */
-    public PostsResponseBody getPostContents(PostsRequestBody request) {
+    public List<PostResponseBody> getPostContents(PostsRequestBody request) {
 
-        PostsResponseBody responseBody = new PostsResponseBody(new ArrayList<>());
+//        PostsResponseBody responseBody = new PostsResponseBody(new ArrayList<>());
+        List<PostResponseBody> responseBodies = new ArrayList<>();
 
         int startIndex = (request.getPages() - 1) * request.getContent_count();
         int endIndex = startIndex + request.getContent_count();
 
         for (int i = startIndex; i < endIndex; i++) {
-            responseBody.getResponseBody().add(
+            responseBodies.add(
                     i, PostResponseBody.of(repositoryMap.get(i))
             );
         }
-        return responseBody;
+        return responseBodies;
     }
 }
