@@ -1,11 +1,15 @@
 package com.asac6c.reddit.dto;
 
-import java.time.LocalDateTime;
+import com.asac6c.reddit.entity.CommentEntity;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@Getter
-public class CommentResponseDTO {
+import java.time.LocalDateTime;
 
+@Getter
+@AllArgsConstructor
+public class CommentResponseDTO {
+  
   private final int user_no;
   private final String user_profile;
   private final String user_nickname;
@@ -15,18 +19,20 @@ public class CommentResponseDTO {
   private final LocalDateTime comment_write_date;
   private final int comment_depth;
   private final int comment_mother;
-
-  public CommentResponseDTO(int user_no, String user_profile, String user_nickname, int comment_no,
-      int comment_vote_count, String comment_content,
-      LocalDateTime comment_write_date, int comment_depth, int comment_mother) {
-    this.user_no = user_no;
-    this.user_profile = user_profile;
-    this.user_nickname = user_nickname;
-    this.comment_no = comment_no;
-    this.comment_vote_count = comment_vote_count;
-    this.comment_content = comment_content;
-    this.comment_write_date = comment_write_date;
-    this.comment_depth = comment_depth;
-    this.comment_mother = comment_mother;
+  private final int post_no;
+  
+  public static CommentResponseDTO from(CommentEntity commentEntity, String user_profile, String user_nickname) {
+    return new CommentResponseDTO(
+            commentEntity.getUser_no(),
+            user_profile,
+            user_nickname,
+            commentEntity.getComment_no(),
+            commentEntity.getComment_vote_count(),
+            commentEntity.getComment_content(),
+            commentEntity.getComment_write_date(),
+            commentEntity.getComment_depth(),
+            commentEntity.getComment_mother(),
+            commentEntity.getPost_no()
+    );
   }
 }
