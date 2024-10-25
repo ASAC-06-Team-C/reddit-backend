@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 //Mock
-public class UserEntity {
+public class User {
     Integer user_no;
     String user_id;
     String user_pw;

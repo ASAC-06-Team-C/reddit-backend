@@ -15,9 +15,9 @@ import lombok.experimental.FieldDefaults;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PostVoteCreateRequestDto {
     @NotNull
-    Integer post_no;
+    Integer postNo;
     @NotNull
-    Integer user_no;
+    Integer userNo;
     @NotNull
-    PostVoteType post_vote_type;
+    PostVoteType postVoteType;
 }

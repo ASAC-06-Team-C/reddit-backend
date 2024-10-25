@@ -2,7 +2,7 @@ package com.asac6c.reddit.service;
 
 import com.asac6c.reddit.dto.PostGetResponseDto;
 import com.asac6c.reddit.dto.PostVoteCreateRequestDto;
-import com.asac6c.reddit.entity.PostEntity;
+import com.asac6c.reddit.entity.Post;
 import com.asac6c.reddit.repository.PostRepositoryImpl;
 import com.asac6c.reddit.repository.PostVoteRepositoryImpl;
 import com.asac6c.reddit.repository.UserRepositoryImpl;
@@ -18,9 +18,9 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostGetResponseDto getPost(Integer postId) {
-        PostEntity post = postRepository.findPostById(postId);
-        String authorNickname = userRepository.getUserById(post.getUser_no()).getUser_nickname();
-        return PostGetResponseDto.from(post,authorNickname);
+        Post post = postRepository.findPostById(postId);
+        String authorNickname = userRepository.getUserById(post.getUserNo()).getUser_nickname();
+        return PostGetResponseDto.from(post, authorNickname);
     }
 
     @Override

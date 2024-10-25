@@ -1,7 +1,7 @@
 package com.asac6c.reddit.repository;
 
-import com.asac6c.reddit.entity.PostEntity;
-import com.asac6c.reddit.entity.PostVoteEntity;
+import com.asac6c.reddit.entity.Post;
+import com.asac6c.reddit.entity.PostVote;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -10,13 +10,13 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @Repository
-public class PostRepositoryImpl implements PostRepository{
-    private final Map<Integer, PostEntity> posts = new HashMap<>();
-    private final Map<Integer, PostVoteEntity> postVotes = new HashMap<>();
+public class PostRepositoryImpl implements PostRepository {
+    private final Map<Integer, Post> posts = new HashMap<>();
+    private final Map<Integer, PostVote> postVotes = new HashMap<>();
     private Integer postId = 0;
 
     @Override
-    public PostEntity findPostById(Integer postId) {
+    public Post findPostById(Integer postId) {
         return posts.get(postId);
     }
 
@@ -26,8 +26,8 @@ public class PostRepositoryImpl implements PostRepository{
     }
 
     @Override
-    public Integer savePostVote(PostVoteEntity postVoteEntity) {
-        PostVoteEntity postVote = postVotes.put(postId++, postVoteEntity);
-        return postVote.getPost_vote_no();
+    public Integer savePostVote(PostVote postVoteEntity) {
+        PostVote postVote = postVotes.put(postId++, postVoteEntity);
+        return postVote.getPostVoteNo();
     }
 }

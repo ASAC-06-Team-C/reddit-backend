@@ -1,9 +1,10 @@
 package com.asac6c.reddit.repository;
 
-import com.asac6c.reddit.entity.UserEntity;
+import com.asac6c.reddit.entity.User;
 
 // Mock
 public interface UserRepository {
-    public void createUser(UserEntity user);
-    public UserEntity getUserById(Integer user_no);
+    public void createUser(User user);
+
+    public User getUserById(Integer user_no);
 }
