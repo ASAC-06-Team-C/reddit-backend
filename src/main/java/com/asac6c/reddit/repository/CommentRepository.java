@@ -10,7 +10,7 @@ import java.util.*;
 @Repository
 public class CommentRepository {
   private final Map<Integer, CommentEntity> commentMap = new HashMap<>();
-  private final Map<Integer, Set<Integer>> voteMap = new HashMap<>();
+  private final Map<Integer, Set<Integer>> commentVoteMap = new HashMap<>();
   
   private int comment_no = 1;
   
@@ -51,10 +51,10 @@ public class CommentRepository {
   public void voteComment(CommentRequestDTO.Vote voteRequest) {
     CommentEntity comment = commentMap.get(voteRequest.getComment_no());
     
-    Set<Integer> vote = voteMap.computeIfAbsent(voteRequest.getComment_no(),
+    Set<Integer> vote = commentVoteMap.computeIfAbsent(voteRequest.getComment_no(),
             k -> new HashSet<>());
     
-    if (voteRequest.isVote_type()) {
+    if (voteRequest.isComment_vote_type()) {
       if (!vote.contains(voteRequest.getUser_no())) {
         vote.add(voteRequest.getUser_no());
         CommentEntity updateComment = new CommentEntity(

@@ -1,13 +1,13 @@
 package com.asac6c.reddit.dto;
 
 import com.asac6c.reddit.entity.CommentEntity;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CommentResponseDTO {
   
   private final int user_no;

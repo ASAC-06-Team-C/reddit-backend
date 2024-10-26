@@ -16,7 +16,6 @@ public class CommentService {
   
   private final CommentRepository commentRepository;
   
-  
   public List<CommentResponseDTO> getAllComment(CommentRequestDTO.Read readRequest) {
     List<CommentEntity> comment = commentRepository.getAllComment();
     return comment.stream()

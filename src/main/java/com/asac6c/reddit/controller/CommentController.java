@@ -17,8 +17,9 @@ public class CommentController {
   private CommentService commentService;
   
   @GetMapping
-  public List<CommentResponseDTO> getAllComment(@RequestBody CommentRequestDTO.Read readRequest) {
-    return commentService.getAllComment(readRequest);
+  public ResponseEntity<List<CommentResponseDTO>> getAllComment(@RequestBody CommentRequestDTO.Read readRequest) {
+    List<CommentResponseDTO> comment = commentService.getAllComment(readRequest);
+    return ResponseEntity.ok(comment);
   }
   
   @PostMapping

@@ -43,6 +43,6 @@ public class CommentRequestDTO {
     
     private int user_no;
     private int comment_no;
-    private boolean vote_type;
+    private boolean comment_vote_type;
   }
 }
