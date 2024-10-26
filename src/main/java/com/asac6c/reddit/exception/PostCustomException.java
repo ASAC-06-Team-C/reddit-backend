@@ -4,9 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class PostCustomException extends RuntimeException {
-  PostExceptionType exceptionType;
-
-  public PostCustomException(PostExceptionType type, Object object) {
-    super(type.getMessage() + object);
-  }
+    public PostCustomException(Object object) {
+        super((String) object);
+    }
 }
