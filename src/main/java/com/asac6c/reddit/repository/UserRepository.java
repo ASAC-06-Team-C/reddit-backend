@@ -8,18 +8,20 @@ import java.util.Map;
 
 @Repository
 //Mock
-public class UserRepository implements IUserRepository {
+public class UserRepository {
     private final Map<Integer, User> users = new HashMap<>();
 
     private Integer userId = 0;
 
-    @Override
     public void createUser(User user) {
         users.put(userId++, user);
     }
 
-    @Override
     public User getUserById(Integer user_no) {
         return users.get(user_no);
+    }
+
+    public void deleteUser(Integer user_no) {
+        users.remove(user_no);
     }
 }
