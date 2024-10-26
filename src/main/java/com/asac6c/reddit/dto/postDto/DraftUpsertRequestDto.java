@@ -13,8 +13,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class DraftUpsertRequestDto {
 
-  Integer userNo;
   Integer postNo;
+  Integer userNo;
   String postTitle;
   String postContent;
   boolean postDraft;
