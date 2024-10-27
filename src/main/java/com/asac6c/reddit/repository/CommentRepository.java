@@ -1,53 +1,46 @@
 package com.asac6c.reddit.repository;
 
-import com.asac6c.reddit.dto.CommentRequestDTO;
+import com.asac6c.reddit.dto.CommentRequestDTO.Create;
+import com.asac6c.reddit.dto.CommentRequestDTO.Read;
+import com.asac6c.reddit.dto.CommentRequestDTO.Update;
+import com.asac6c.reddit.dto.CommentRequestDTO.Vote;
 import com.asac6c.reddit.entity.CommentEntity;
-import java.time.LocalDateTime;
+import com.asac6c.reddit.entity.CommentVoteEntity;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class CommentRepository {
 
   private final Map<Integer, CommentEntity> commentMap = new HashMap<>();
-  private final Map<Integer, Set<Integer>> commentVoteMap = new HashMap<>();
+  private final Map<Integer, CommentVoteEntity> commentVoteMap = new HashMap<>();
 
   private int comment_no = 1;
+  private int comment_vote_no = 1;
 
-  public List<CommentEntity> getComment(CommentRequestDTO.Read readRequest) {
+  public List<CommentEntity> getComment(Read readRequest) {
     return commentMap.values().stream()
         .filter(comment -> comment.getPost_no() == readRequest.getPost_no())
-        .collect(Collectors.toList());
+        .toList();
   }
 
   public List<CommentEntity> getAllComment() {
     return new ArrayList<>(commentMap.values());
   }
 
-  public CommentEntity createComment(CommentRequestDTO.Create createRequest) {
-    CommentEntity newComment = CommentEntity.from(createRequest, comment_no);
+  public CommentEntity createComment(Create createRequest) {
+    CommentEntity newComment = CommentEntity.createCommentFromRequest(createRequest, comment_no);
+
     commentMap.put(comment_no++, newComment);
     return newComment;
   }
 
-  public void updateComment(CommentRequestDTO.Update updateRequest) {
+  public void updateComment(Update updateRequest) {
     CommentEntity comment = commentMap.get(updateRequest.getComment_no());
-    CommentEntity updateComment = new CommentEntity(
-        comment.getComment_no(),
-        comment.getPost_no(),
-        updateRequest.getUser_no(),
-        updateRequest.getComment_content(),
-        comment.getComment_vote_count(),
-        comment.getComment_mother(),
-        comment.getComment_depth(),
-        LocalDateTime.now()
-    );
+    CommentEntity updateComment = CommentEntity.updateCommentFromRequest(updateRequest, comment);
 
     commentMap.replace(updateRequest.getComment_no(), updateComment);
   }
@@ -56,27 +49,17 @@ public class CommentRepository {
     commentMap.remove(comment_no);
   }
 
-  public void voteComment(CommentRequestDTO.Vote voteRequest) {
+  public void voteComment(Vote voteRequest) {
     CommentEntity comment = commentMap.get(voteRequest.getComment_no());
+    
+    commentVoteMap.put(comment_vote_no, CommentVoteEntity.from(voteRequest, comment_vote_no++));
 
-    Set<Integer> vote = commentVoteMap.computeIfAbsent(voteRequest.getComment_no(),
-        k -> new HashSet<>());
+    int voteCount = voteRequest.isComment_vote_type()
+        ? comment.getComment_vote_count() + 1
+        : comment.getComment_vote_count() - 1;
 
-    if (voteRequest.isComment_vote_type()) {
-      if (!vote.contains(voteRequest.getUser_no())) {
-        vote.add(voteRequest.getUser_no());
-        CommentEntity updateComment = new CommentEntity(
-            voteRequest.getComment_no(),
-            comment.getPost_no(),
-            voteRequest.getUser_no(),
-            comment.getComment_content(),
-            comment.getComment_vote_count() + 1,
-            comment.getComment_mother(),
-            comment.getComment_depth(),
-            LocalDateTime.now()
-        );
-        commentMap.replace(voteRequest.getComment_no(), updateComment);
-      }
-    }
+    CommentEntity updateVote = CommentEntity.withVoteCount(comment, voteCount);
+
+    commentMap.replace(voteRequest.getComment_no(), updateVote);
   }
 }

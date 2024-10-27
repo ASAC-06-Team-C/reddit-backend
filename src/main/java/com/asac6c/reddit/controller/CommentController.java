@@ -4,7 +4,7 @@ import com.asac6c.reddit.dto.CommentRequestDTO;
 import com.asac6c.reddit.dto.CommentResponseDTO;
 import com.asac6c.reddit.service.CommentService;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/comments")
+@RequiredArgsConstructor
 public class CommentController {
 
-  @Autowired
-  private CommentService commentService;
+  private final CommentService commentService;
 
   @GetMapping
   public ResponseEntity<List<CommentResponseDTO>> getComment(
