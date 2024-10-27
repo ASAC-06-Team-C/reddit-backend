@@ -14,7 +14,7 @@ import lombok.experimental.FieldDefaults;
 @ToString
 @Getter
 @Builder
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor()
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class Post {
 
