@@ -1,14 +1,17 @@
 package com.asac6c.reddit.controller;
 
 import com.asac6c.reddit.dto.PostGetResponseDto;
-import com.asac6c.reddit.dto.PostResponseBody;
+import com.asac6c.reddit.dto.GetReadPostsResponseBodyDto;
 import com.asac6c.reddit.dto.PostVoteCreateRequestDto;
-import com.asac6c.reddit.dto.PostsRequestBody;
+import com.asac6c.reddit.dto.GetReadPostsRequestBodyDto;
 import com.asac6c.reddit.service.PostService;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +22,9 @@ import java.util.List;
 @RequestMapping(value = "/posts")
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PostController {
+
     PostService postService;
 
     @GetMapping(value = "/{post_no}")
@@ -48,9 +53,9 @@ public class PostController {
 
 
     @GetMapping("")
-    public ResponseEntity<List<PostResponseBody>> posts(PostsRequestBody requestBody) {
+    public ResponseEntity<List<GetReadPostsResponseBodyDto>> readPosts(GetReadPostsRequestBodyDto requestBody) {
 
-        List<PostResponseBody> response = postService.getPostsContents(requestBody);
+        List<GetReadPostsResponseBodyDto> response = postService.getPostsContents(requestBody);
 
         return ResponseEntity.ok(response);
     }

@@ -1,9 +1,9 @@
 package com.asac6c.reddit.service;
 
 import com.asac6c.reddit.dto.PostGetResponseDto;
-import com.asac6c.reddit.dto.PostResponseBody;
+import com.asac6c.reddit.dto.GetReadPostsResponseBodyDto;
 import com.asac6c.reddit.dto.PostVoteCreateRequestDto;
-import com.asac6c.reddit.dto.PostsRequestBody;
+import com.asac6c.reddit.dto.GetReadPostsRequestBodyDto;
 import com.asac6c.reddit.dto.postDto.DraftSummaryResponseDto;
 import com.asac6c.reddit.dto.postDto.PostResponseDto;
 import com.asac6c.reddit.entity.Post;
@@ -24,6 +24,7 @@ import java.util.List;
 @Service
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class PostService {
+
     PostRepository postRepository;
     PostVoteRepository postVoteRepository;
     UserRepository userRepository;
@@ -54,7 +55,7 @@ public class PostService {
     }
 
 
-    public List<PostResponseBody> getPostsContents(PostsRequestBody requestBody) {
+    public List<GetReadPostsResponseBodyDto> getPostsContents(GetReadPostsRequestBodyDto requestBody) {
         return postRepository.getPostContents(requestBody);
     }
 
