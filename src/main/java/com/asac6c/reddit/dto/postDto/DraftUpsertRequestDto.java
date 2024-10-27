@@ -6,14 +6,14 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.NonFinal;
 
 @Getter
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
-public class PostCreateRequestDto {
+public class DraftUpsertRequestDto {
 
+  Integer postNo;
   Integer userNo;
   String postTitle;
   String postContent;

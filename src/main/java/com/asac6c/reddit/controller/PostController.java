@@ -1,5 +1,9 @@
 package com.asac6c.reddit.controller;
 
+import com.asac6c.reddit.dto.postDto.DraftUpsertRequestDto;
+import com.asac6c.reddit.dto.postDto.PostCreateRequestDto;
+import com.asac6c.reddit.dto.postDto.PostCreateResponseDto;
+import com.asac6c.reddit.dto.postDto.PostResponseDto;
 import com.asac6c.reddit.dto.PostGetResponseDto;
 import com.asac6c.reddit.dto.GetReadPostsResponseBodyDto;
 import com.asac6c.reddit.dto.PostVoteCreateRequestDto;
@@ -27,21 +31,28 @@ public class PostController {
 
     PostService postService;
 
-    @GetMapping(value = "/{post_no}")
-    public ResponseEntity<PostGetResponseDto> getPost(
-            @PathVariable("post_no") Integer post_no
-    ) {
-        PostGetResponseDto post = postService.getPost(post_no);
-        return ResponseEntity.status(HttpStatus.OK).body(post);
-    }
+  @PostMapping("")
+  public ResponseEntity<PostCreateResponseDto> createDraft(
+      @RequestBody PostCreateRequestDto request) {
+    PostCreateResponseDto response = postService.createDraft(request);
+    return ResponseEntity.status(HttpStatus.CREATED).body(response);
+  }
 
-    @DeleteMapping(value = "/{post_no}")
-    public ResponseEntity<Void> deletePost(
-            @PathVariable Integer post_no
-    ) {
-        postService.deletePost(post_no);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
+  @GetMapping(value = "/{post_no}")
+  public ResponseEntity<PostGetResponseDto> getPost(
+      @PathVariable("post_no") Integer post_no
+  ) {
+    PostGetResponseDto post = postService.getPost(post_no);
+    return ResponseEntity.status(HttpStatus.OK).body(post);
+  }
+
+  @DeleteMapping(value = "/{post_no}")
+  public ResponseEntity<Void> deletePost(
+      @PathVariable Integer post_no
+  ) {
+    postService.deletePost(post_no);
+    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+  }
 
     @PostMapping("/vote")
     public ResponseEntity<Void> createPostVote(
@@ -59,4 +70,11 @@ public class PostController {
 
         return ResponseEntity.ok(response);
     }
+
+  @PutMapping("")
+  public ResponseEntity<PostCreateResponseDto> createPostByDraft(
+      @RequestBody DraftUpsertRequestDto request) {
+    PostCreateResponseDto response = postService.createPostByDraft(request);
+    return ResponseEntity.status(HttpStatus.CREATED).body(response);
+  }
 }
