@@ -1,13 +1,15 @@
 package com.asac6c.reddit.repository;
 
+import com.asac6c.reddit.dto.UpdateUserNickNameRequestDto;
+import com.asac6c.reddit.dto.UpdateUserPwRequestDto;
 import com.asac6c.reddit.entity.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Repository
-//Mock
 public class UserRepository {
     private final Map<Integer, User> users = new HashMap<>();
 
@@ -17,11 +19,25 @@ public class UserRepository {
         users.put(userId++, user);
     }
 
-    public User getUserById(Integer user_no) {
-        return users.get(user_no);
+    public User getUserById(Integer userNo) {
+        return users.get(userNo);
     }
 
-    public void deleteUser(Integer user_no) {
-        users.remove(user_no);
+    public List<User> getAllUser() {
+        return users.values().stream().toList();
+    }
+
+    public void updateUserNickName(Integer userNo, UpdateUserNickNameRequestDto updateUserNickNameRequestDto) {
+        User user = users.get(userNo);
+        user.setUserNickName(updateUserNickNameRequestDto.getUserNickName());
+    }
+
+    public void updateUserPassword(Integer userNo, UpdateUserPwRequestDto updateUserPwRequestDto) {
+        User user = users.get(userNo);
+        user.setUserPw(updateUserPwRequestDto.getUserPw());
+    }
+
+    public void deleteUser(Integer userNo) {
+        users.remove(userNo);
     }
 }
