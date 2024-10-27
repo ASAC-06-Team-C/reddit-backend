@@ -6,6 +6,7 @@ import com.asac6c.reddit.entity.Post;
 import com.asac6c.reddit.entity.PostVote;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -87,6 +88,25 @@ public class PostRepository {
     repositoryMap.replace(targetPostNo, entity);
     return entity;
   }
+
+    /**
+     * @param request {String sort_type Integer pages Integer content_count}
+     * @return PostsResponseBody
+     */
+    public List<GetReadPostsResponseBodyDto> getPostContents(GetReadPostsRequestBodyDto request) {
+
+        List<GetReadPostsResponseBodyDto> responseBodies = new ArrayList<>();
+
+        int startIndex = (request.getPages() - 1) * request.getContent_count();
+        int endIndex = startIndex + request.getContent_count();
+
+        for (int i = startIndex; i < endIndex; i++) {
+            responseBodies.add(
+                    i, GetReadPostsResponseBodyDto.of(repositoryMap.get(i))
+            );
+        }
+        return responseBodies;
+    }
 
     /**
      * @param request {String sort_type Integer pages Integer content_count}

@@ -1,6 +1,5 @@
 package com.asac6c.reddit.controller;
 
-
 import com.asac6c.reddit.dto.postDto.DraftUpsertRequestDto;
 import com.asac6c.reddit.dto.postDto.PostCreateRequestDto;
 import com.asac6c.reddit.dto.postDto.PostCreateResponseDto;
