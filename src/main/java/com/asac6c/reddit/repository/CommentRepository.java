@@ -32,7 +32,7 @@ public class CommentRepository {
   }
 
   public CommentEntity createComment(Create createRequest) {
-    CommentEntity newComment = CommentEntity.createCommentFromRequest(createRequest, comment_no);
+    CommentEntity newComment = CommentEntity.from(createRequest, comment_no);
 
     commentMap.put(comment_no++, newComment);
     return newComment;
@@ -40,9 +40,8 @@ public class CommentRepository {
 
   public void updateComment(Update updateRequest) {
     CommentEntity comment = commentMap.get(updateRequest.getComment_no());
-    CommentEntity updateComment = CommentEntity.updateCommentFromRequest(updateRequest, comment);
 
-    commentMap.replace(updateRequest.getComment_no(), updateComment);
+    comment.setComment_content(updateRequest.getComment_content());
   }
 
   public void deleteComment(int comment_no) {
@@ -51,15 +50,13 @@ public class CommentRepository {
 
   public void voteComment(Vote voteRequest) {
     CommentEntity comment = commentMap.get(voteRequest.getComment_no());
-    
+
     commentVoteMap.put(comment_vote_no, CommentVoteEntity.from(voteRequest, comment_vote_no++));
 
     int voteCount = voteRequest.isComment_vote_type()
         ? comment.getComment_vote_count() + 1
         : comment.getComment_vote_count() - 1;
 
-    CommentEntity updateVote = CommentEntity.withVoteCount(comment, voteCount);
-
-    commentMap.replace(voteRequest.getComment_no(), updateVote);
+    comment.setComment_vote_count(voteCount);
   }
 }
