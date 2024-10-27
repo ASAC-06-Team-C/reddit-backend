@@ -8,13 +8,14 @@ import lombok.Setter;
 
 @AllArgsConstructor
 @Getter
-@Setter
 public class CommentEntity {
 
   private final int comment_no;
   private final int post_no;
   private final int user_no;
+  @Setter
   private String comment_content;
+  @Setter
   private int comment_vote_count;
   private final int comment_mother;
   private final int comment_depth;
