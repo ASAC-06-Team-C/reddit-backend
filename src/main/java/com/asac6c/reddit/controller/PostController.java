@@ -6,35 +6,31 @@ import com.asac6c.reddit.dto.postDto.PostCreateRequestDto;
 import com.asac6c.reddit.dto.postDto.PostCreateResponseDto;
 import com.asac6c.reddit.dto.postDto.PostResponseDto;
 import com.asac6c.reddit.dto.PostGetResponseDto;
+import com.asac6c.reddit.dto.GetReadPostsResponseBodyDto;
 import com.asac6c.reddit.dto.PostVoteCreateRequestDto;
-import com.asac6c.reddit.service.DraftService;
+import com.asac6c.reddit.dto.GetReadPostsRequestBodyDto;
 import com.asac6c.reddit.service.PostService;
-
-import java.util.List;
-
-import lombok.AccessLevel;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.Valid;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/posts")
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PostController {
 
-  PostService postService;
+    PostService postService;
 
   @PostMapping("")
   public ResponseEntity<PostCreateResponseDto> createDraft(
@@ -59,13 +55,22 @@ public class PostController {
     return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
   }
 
-  @PostMapping("/vote")
-  public ResponseEntity<Void> createPostVote(
-      @Valid @RequestBody PostVoteCreateRequestDto postVoteCreateRequestDto
-  ) {
-    postService.putPostVote(postVoteCreateRequestDto);
-    return ResponseEntity.status(HttpStatus.OK).build();
-  }
+    @PostMapping("/vote")
+    public ResponseEntity<Void> createPostVote(
+            @Valid @RequestBody PostVoteCreateRequestDto postVoteCreateRequestDto
+    ) {
+        postService.putPostVote(postVoteCreateRequestDto);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+
+    @GetMapping("")
+    public ResponseEntity<List<GetReadPostsResponseBodyDto>> readPosts(GetReadPostsRequestBodyDto requestBody) {
+
+        List<GetReadPostsResponseBodyDto> response = postService.getPostsContents(requestBody);
+
+        return ResponseEntity.ok(response);
+    }
 
   @PutMapping("")
   public ResponseEntity<PostCreateResponseDto> createPostByDraft(

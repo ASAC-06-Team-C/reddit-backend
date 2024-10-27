@@ -16,7 +16,8 @@ import java.util.Date;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class PostResponseBody {
+public class GetReadPostsResponseBodyDto {
+
     Integer userNo;
     Integer postNo;
     String communityName;
@@ -26,8 +27,8 @@ public class PostResponseBody {
     Integer postCommentCount;
     Date postWriteDate;
 
-    public static PostResponseBody of(Post post) {
-        return new PostResponseBody(
+    public static GetReadPostsResponseBodyDto of(Post post) {
+        return new GetReadPostsResponseBodyDto(
                 post.getUserNo(),
                 post.getPostNo(),
                 post.getCommunityName(),
