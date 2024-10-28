@@ -47,65 +47,46 @@ public class PostRepository {
                 new Post(10, 10, "DUMMY", "제목 10", "내용 10", 10, 10, false, new Date(System.currentTimeMillis())));
     }
 
-  public Post findPostById(Integer postId) {
-    return repositoryMap.get(postId);
-  }
-
-  public Optional<Post> getDraftByPostId(Integer postNo) {
-    return Optional.ofNullable(repositoryMap.get(postNo));
-  }
-
-  public Post createPost(Post.PostBuilder postBuilder) {
-    Integer generatedNo = ++postId;
-    Post createdPost = postBuilder.postNo(generatedNo).build();
-    repositoryMap.put(generatedNo, createdPost);
-    return createdPost;
-  }
-
-  public void deletePostById(Integer postId) {
-    repositoryMap.remove(postId);
-  }
-
-  public Integer savePostVote(PostVote postVoteEntity) {
-    PostVote postVote = postVotes.put(postId++, postVoteEntity);
-    return postVote.getPostVoteNo();
-  }
-
-  public List<Post> getDraftListByUserId(Integer id) {
-    return repositoryMap.values()
-        .stream()
-        .filter((post) -> post.getUserNo().equals(id))
-        .toList();
-  }
-
-  public Post upsertPostDetail(Post entity) {
-    Post retrievedPost = Optional.ofNullable(repositoryMap.get(entity.getPostNo()))
-        .orElseThrow(() -> new IllegalArgumentException("잘못된 접근입니다."));
-    Integer targetPostNo = entity.getPostNo();
-    if (!entity.getUserNo().equals(retrievedPost.getUserNo())) {
-      throw new IllegalArgumentException("이 사용자에게는 권한이 없습니다.");
+    public Post findPostById(Integer postId) {
+        return repositoryMap.get(postId);
     }
-    repositoryMap.replace(targetPostNo, entity);
-    return entity;
-  }
 
-    /**
-     * @param request {String sort_type Integer pages Integer content_count}
-     * @return PostsResponseBody
-     */
-    public List<GetReadPostsResponseBodyDto> getPostContents(GetReadPostsRequestBodyDto request) {
+    public Optional<Post> getDraftByPostId(Integer postNo) {
+        return Optional.ofNullable(repositoryMap.get(postNo));
+    }
 
-        List<GetReadPostsResponseBodyDto> responseBodies = new ArrayList<>();
+    public Post createPost(Post.PostBuilder postBuilder) {
+        Integer generatedNo = ++postId;
+        Post createdPost = postBuilder.postNo(generatedNo).build();
+        repositoryMap.put(generatedNo, createdPost);
+        return createdPost;
+    }
 
-        int startIndex = (request.getPages() - 1) * request.getContent_count();
-        int endIndex = startIndex + request.getContent_count();
+    public void deletePostById(Integer postId) {
+        repositoryMap.remove(postId);
+    }
 
-        for (int i = startIndex; i < endIndex; i++) {
-            responseBodies.add(
-                    i, GetReadPostsResponseBodyDto.of(repositoryMap.get(i))
-            );
+    public Integer savePostVote(PostVote postVoteEntity) {
+        PostVote postVote = postVotes.put(postId++, postVoteEntity);
+        return postVote.getPostVoteNo();
+    }
+
+    public List<Post> getDraftListByUserId(Integer id) {
+        return repositoryMap.values()
+                .stream()
+                .filter((post) -> post.getUserNo().equals(id))
+                .toList();
+    }
+
+    public Post upsertPostDetail(Post entity) {
+        Post retrievedPost = Optional.ofNullable(repositoryMap.get(entity.getPostNo()))
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 접근입니다."));
+        Integer targetPostNo = entity.getPostNo();
+        if (!entity.getUserNo().equals(retrievedPost.getUserNo())) {
+            throw new IllegalArgumentException("이 사용자에게는 권한이 없습니다.");
         }
-        return responseBodies;
+        repositoryMap.replace(targetPostNo, entity);
+        return entity;
     }
 
     /**
