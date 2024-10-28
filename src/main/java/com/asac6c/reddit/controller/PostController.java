@@ -3,11 +3,11 @@ package com.asac6c.reddit.controller;
 import com.asac6c.reddit.dto.postDto.DraftUpsertRequestDto;
 import com.asac6c.reddit.dto.postDto.PostCreateRequestDto;
 import com.asac6c.reddit.dto.postDto.PostCreateResponseDto;
-import com.asac6c.reddit.dto.postDto.PostResponseDto;
 import com.asac6c.reddit.dto.PostGetResponseDto;
 import com.asac6c.reddit.dto.GetReadPostsResponseBodyDto;
-import com.asac6c.reddit.dto.PostVoteCreateRequestDto;
+import com.asac6c.reddit.dto.PostVoteUpdateRequestDto;
 import com.asac6c.reddit.dto.GetReadPostsRequestBodyDto;
+import com.asac6c.reddit.entity.PostVoteType;
 import com.asac6c.reddit.service.PostService;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -15,7 +15,6 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,34 +30,41 @@ public class PostController {
 
     PostService postService;
 
-  @PostMapping("")
-  public ResponseEntity<PostCreateResponseDto> createDraft(
-      @RequestBody PostCreateRequestDto request) {
-    PostCreateResponseDto response = postService.createDraft(request);
-    return ResponseEntity.status(HttpStatus.CREATED).body(response);
-  }
+    @PostMapping("")
+    public ResponseEntity<PostCreateResponseDto> createDraft(
+            @RequestBody PostCreateRequestDto request) {
+        PostCreateResponseDto response = postService.createDraft(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
 
-  @GetMapping(value = "/{post_no}")
-  public ResponseEntity<PostGetResponseDto> getPost(
-      @PathVariable("post_no") Integer post_no
-  ) {
-    PostGetResponseDto post = postService.getPost(post_no);
-    return ResponseEntity.status(HttpStatus.OK).body(post);
-  }
+    @GetMapping(value = "/{post_no}")
+    public ResponseEntity<PostGetResponseDto> getPost(
+            @PathVariable("post_no") Integer post_no
+    ) {
+        PostGetResponseDto post = postService.getPost(post_no);
+        return ResponseEntity.status(HttpStatus.OK).body(post);
+    }
 
-  @DeleteMapping(value = "/{post_no}")
-  public ResponseEntity<Void> deletePost(
-      @PathVariable Integer post_no
-  ) {
-    postService.deletePost(post_no);
-    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-  }
+    @DeleteMapping(value = "/{post_no}")
+    public ResponseEntity<Void> deletePost(
+            @PathVariable Integer post_no
+    ) {
+        postService.deletePost(post_no);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 
     @PostMapping("/vote")
     public ResponseEntity<Void> createPostVote(
-            @Valid @RequestBody PostVoteCreateRequestDto postVoteCreateRequestDto
+            @Valid @RequestBody PostVoteUpdateRequestDto postVoteUpdateRequestDto
     ) {
-        postService.putPostVote(postVoteCreateRequestDto);
+        if (postVoteUpdateRequestDto.getPostVoteNo() == null) {
+            postService.createPostVote(postVoteUpdateRequestDto);
+        } else if (postVoteUpdateRequestDto.getPostVoteType().equals(PostVoteType.NONE)) {
+            postService.deletePostVote(postVoteUpdateRequestDto);
+        } else {
+            postService.updatePostVote(postVoteUpdateRequestDto);
+        }
+
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
@@ -71,10 +77,10 @@ public class PostController {
         return ResponseEntity.ok(response);
     }
 
-  @PutMapping("")
-  public ResponseEntity<PostCreateResponseDto> createPostByDraft(
-      @RequestBody DraftUpsertRequestDto request) {
-    PostCreateResponseDto response = postService.createPostByDraft(request);
-    return ResponseEntity.status(HttpStatus.CREATED).body(response);
-  }
+    @PutMapping("")
+    public ResponseEntity<PostCreateResponseDto> createPostByDraft(
+            @RequestBody DraftUpsertRequestDto request) {
+        PostCreateResponseDto response = postService.createPostByDraft(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
 }

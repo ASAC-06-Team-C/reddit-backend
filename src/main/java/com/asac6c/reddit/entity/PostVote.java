@@ -1,19 +1,20 @@
 package com.asac6c.reddit.entity;
 
-import com.asac6c.reddit.dto.PostVoteCreateRequestDto;
+import com.asac6c.reddit.dto.PostVoteUpdateRequestDto;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Getter
-@RequiredArgsConstructor
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class PostVote {
-    Integer postVoteNo;
-    Integer userNo;
-    Integer postNo;
+    final Integer postVoteNo;
+    final Integer userNo;
+    final Integer postNo;
+    @Setter
     PostVoteType postVoteType;
 
-    public static PostVote from(Integer postVoteNo, PostVoteCreateRequestDto requestDto) {
+    public static PostVote from(Integer postVoteNo, PostVoteUpdateRequestDto requestDto) {
         return new PostVote(
                 postVoteNo,
                 requestDto.getUserNo(),
