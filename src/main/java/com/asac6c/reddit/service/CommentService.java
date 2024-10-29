@@ -15,7 +15,7 @@ public class CommentService {
   private final CommentRepository commentRepository;
 
   public List<CommentResponseDTO> getComment(CommentRequestDTO.Read readRequest) {
-    List<CommentEntity> comment = commentRepository.getComment(readRequest);
+    List<CommentEntity> comment = commentRepository.getComment(readRequest.getPostNo());
     return comment.stream()
         .map(commentEntity -> CommentResponseDTO.from(commentEntity, null, null))
         .toList();
@@ -37,7 +37,7 @@ public class CommentService {
   }
 
   public void deleteComment(CommentRequestDTO.Delete deleteRequest) {
-    commentRepository.deleteComment(deleteRequest.getComment_no());
+    commentRepository.deleteComment(deleteRequest.getCommentNo());
   }
 
   public void voteComment(CommentRequestDTO.Vote voteRequest) {

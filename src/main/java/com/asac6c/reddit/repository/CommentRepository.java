@@ -1,7 +1,6 @@
 package com.asac6c.reddit.repository;
 
 import com.asac6c.reddit.dto.CommentRequestDTO.Create;
-import com.asac6c.reddit.dto.CommentRequestDTO.Read;
 import com.asac6c.reddit.dto.CommentRequestDTO.Update;
 import com.asac6c.reddit.dto.CommentRequestDTO.Vote;
 import com.asac6c.reddit.entity.CommentEntity;
@@ -18,12 +17,12 @@ public class CommentRepository {
   private final Map<Integer, CommentEntity> commentMap = new HashMap<>();
   private final Map<Integer, CommentVoteEntity> commentVoteMap = new HashMap<>();
 
-  private int comment_no = 1;
-  private int comment_vote_no = 1;
+  private int commentNo = 1;
+  private int commentVoteNo = 1;
 
-  public List<CommentEntity> getComment(Read readRequest) {
+  public List<CommentEntity> getComment(int postNo) {
     return commentMap.values().stream()
-        .filter(comment -> comment.getPost_no() == readRequest.getPost_no())
+        .filter(comment -> comment.getPostNo() == postNo)
         .toList();
   }
 
@@ -32,16 +31,16 @@ public class CommentRepository {
   }
 
   public CommentEntity createComment(Create createRequest) {
-    CommentEntity newComment = CommentEntity.from(createRequest, comment_no);
+    CommentEntity newComment = CommentEntity.from(createRequest, commentNo);
 
-    commentMap.put(comment_no++, newComment);
+    commentMap.put(commentNo++, newComment);
     return newComment;
   }
 
   public void updateComment(Update updateRequest) {
-    CommentEntity comment = commentMap.get(updateRequest.getComment_no());
+    CommentEntity comment = commentMap.get(updateRequest.getCommentNo());
 
-    comment.setComment_content(updateRequest.getComment_content());
+    comment.setCommentContent(updateRequest.getCommentContent());
   }
 
   public void deleteComment(int comment_no) {
@@ -49,14 +48,14 @@ public class CommentRepository {
   }
 
   public void voteComment(Vote voteRequest) {
-    CommentEntity comment = commentMap.get(voteRequest.getComment_no());
+    CommentEntity comment = commentMap.get(voteRequest.getCommentNo());
 
-    commentVoteMap.put(comment_vote_no, CommentVoteEntity.from(voteRequest, comment_vote_no++));
+    commentVoteMap.put(commentVoteNo, CommentVoteEntity.from(voteRequest, commentVoteNo++));
 
-    int voteCount = voteRequest.isComment_vote_type()
-        ? comment.getComment_vote_count() + 1
-        : comment.getComment_vote_count() - 1;
+    int voteCount = voteRequest.isCommentVoteType()
+        ? comment.getCommentVoteCount() + 1
+        : comment.getCommentVoteCount() - 1;
 
-    comment.setComment_vote_count(voteCount);
+    comment.setCommentVoteCount(voteCount);
   }
 }

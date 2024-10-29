@@ -24,16 +24,16 @@ public class CommentController {
 
   @GetMapping
   public ResponseEntity<List<CommentResponseDTO>> getComment(
-      @RequestParam int post_no,
-      @RequestParam String sort_type,
-      @RequestParam int post_comment_count,
-      @RequestParam int comment_page) {
+      @RequestParam("post_no") int postNo,
+      @RequestParam("sort_type") String sortType,
+      @RequestParam("post_comment_count") int postCommentCount,
+      @RequestParam("comment_page") int commentPage) {
 
     CommentRequestDTO.Read readRequest = new CommentRequestDTO.Read(
-        post_no,
-        sort_type,
-        post_comment_count,
-        comment_page
+        postNo,
+        sortType,
+        postCommentCount,
+        commentPage
     );
 
     List<CommentResponseDTO> comment = commentService.getComment(readRequest);
