@@ -4,12 +4,16 @@ import com.asac6c.reddit.dto.GetReadPostsResponseBodyDto;
 import com.asac6c.reddit.dto.GetReadPostsRequestBodyDto;
 import com.asac6c.reddit.entity.Post;
 import com.asac6c.reddit.entity.PostVote;
+import com.asac6c.reddit.exception.GetPostsCustomException;
+import com.asac6c.reddit.exception.GetPostsExceptionType;
+import com.asac6c.reddit.exception.PostCustomException;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Repository
@@ -94,6 +98,16 @@ public class PostRepository {
      * @return PostsResponseBody
      */
     public List<GetReadPostsResponseBodyDto> getPostContents(GetReadPostsRequestBodyDto request) {
+
+        // 옵셔널을 굳이 써야 하는가... 내가 쓰는 방법을 모르는 건가
+        if (request.getContent_count() == null || request.getPages() == null || request.getSort_type() == null) {
+            throw new GetPostsCustomException(GetPostsExceptionType.ARGUMENT_TYPE_MISMATCH);
+        }
+
+        // 후에 DB 적용 후, 수정해야 함. 더 이상 조회할 포스트 컨텐츠가 없을 경우. 지금은 무조건 참이기에 주석처리.
+//        if (repositoryMap.size() == 0) {
+//            throw new GetPostsCustomException(GetPostsExceptionType.NO_MORE_POSTS);
+//        }
 
         List<GetReadPostsResponseBodyDto> responseBodies = new ArrayList<>();
 
