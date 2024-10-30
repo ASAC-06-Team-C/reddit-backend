@@ -38,4 +38,11 @@ public class GlobalExceptionHandler {
 //        return makeResponse(exceptionType, cause);
 //    }
 
+    @ExceptionHandler
+    public ResponseEntity<ExceptionResponseDto> handleUndefinedException(Exception e) {
+        GetPostsExceptionType exceptionType = GetPostsExceptionType.UNDEFINED_EXCEPTION;
+        String cause = "정의되지 않은 오류 입니다.";
+        return makeResponse(exceptionType, cause);
+    }
+
 }

@@ -100,9 +100,9 @@ public class PostRepository {
     public List<GetReadPostsResponseBodyDto> getPostContents(GetReadPostsRequestBodyDto request) {
 
         // 옵셔널을 굳이 써야 하는가... 내가 쓰는 방법을 모르는 건가
-        if (request.getContent_count() == null || request.getPages() == null || request.getSort_type() == null) {
-            throw new GetPostsCustomException(GetPostsExceptionType.ARGUMENT_TYPE_MISMATCH);
-        }
+//        if (request.getContent_count() == null || request.getPages() == null || request.getSort_type() == null) {
+//            throw new GetPostsCustomException(GetPostsExceptionType.ARGUMENT_TYPE_MISMATCH);
+//        }
 
         // 후에 DB 적용 후, 수정해야 함. 더 이상 조회할 포스트 컨텐츠가 없을 경우. 지금은 무조건 참이기에 주석처리.
 //        if (repositoryMap.size() == 0) {

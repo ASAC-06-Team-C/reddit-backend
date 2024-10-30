@@ -13,7 +13,8 @@ import org.springframework.http.HttpStatus;
 public enum GetPostsExceptionType {
 
     NO_MORE_POSTS(HttpStatus.NOT_FOUND, "더 이상 조회할 포스트가 없습니다."),
-    ARGUMENT_TYPE_MISMATCH(HttpStatus.NOT_FOUND, "변수 타입이 지정된 것과 같지 않습니다.");
+    ARGUMENT_TYPE_MISMATCH(HttpStatus.NOT_FOUND, "변수 타입이 지정된 것과 같지 않습니다."),
+    UNDEFINED_EXCEPTION(HttpStatus.NOT_FOUND, "알 수 없는 에러입니다.");
 //    REST_METHOD_TYPE_MISMATCH(HttpStatus.NOT_FOUND, "API 호출 방식이 잘못 되었습니다. GET 방식으로 호출 해 주세요"); // 이건 Spring 에서 잡아주지 않나?
 
     //    String type;
