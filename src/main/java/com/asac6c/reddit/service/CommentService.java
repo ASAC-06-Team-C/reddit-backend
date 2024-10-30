@@ -28,8 +28,8 @@ public class CommentService {
         .toList();
   }
 
-  public void createComment(CommentRequestDTO.Create createRequest) {
-    CommentResponseDTO.from(commentRepository.createComment(createRequest), null, null);
+  public CommentResponseDTO createComment(CommentRequestDTO.Create createRequest) {
+    return CommentResponseDTO.from(commentRepository.createComment(createRequest), null, null);
   }
 
   public void updateComment(CommentRequestDTO.Update updateRequest) {

@@ -1,12 +1,15 @@
 package com.asac6c.reddit.dto;
 
 import com.asac6c.reddit.entity.CommentEntity;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
+@JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class CommentResponseDTO {
 
   private final int userNo;

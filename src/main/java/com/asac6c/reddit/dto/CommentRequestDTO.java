@@ -1,13 +1,15 @@
 package com.asac6c.reddit.dto;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
 
 public class CommentRequestDTO {
 
   @Getter
   @RequiredArgsConstructor
+  @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
   public static class Read {
 
     private final int postNo;
@@ -17,6 +19,7 @@ public class CommentRequestDTO {
   }
 
   @Getter
+  @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
   public static class Create {
 
     private int postNo;
@@ -27,6 +30,7 @@ public class CommentRequestDTO {
   }
 
   @Getter
+  @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
   public static class Update {
 
     private int userNo;
@@ -35,6 +39,7 @@ public class CommentRequestDTO {
   }
 
   @Getter
+  @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
   public static class Delete {
 
     private int userNo;
@@ -42,6 +47,7 @@ public class CommentRequestDTO {
   }
 
   @Getter
+  @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
   public static class Vote {
 
     private int userNo;

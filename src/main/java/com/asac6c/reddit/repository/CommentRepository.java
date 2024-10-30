@@ -52,6 +52,7 @@ public class CommentRepository {
 
     commentVoteMap.put(commentVoteNo, CommentVoteEntity.from(voteRequest, commentVoteNo++));
 
+    System.out.println(voteRequest.isCommentVoteType());
     int voteCount = voteRequest.isCommentVoteType()
         ? comment.getCommentVoteCount() + 1
         : comment.getCommentVoteCount() - 1;
