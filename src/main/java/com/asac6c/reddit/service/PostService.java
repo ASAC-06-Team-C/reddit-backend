@@ -8,10 +8,7 @@ import com.asac6c.reddit.dto.postDto.DraftSummaryResponseDto;
 import com.asac6c.reddit.dto.postDto.DraftUpsertRequestDto;
 import com.asac6c.reddit.dto.postDto.PostCreateRequestDto;
 import com.asac6c.reddit.dto.postDto.PostCreateResponseDto;
-import com.asac6c.reddit.dto.postDto.PostResponseDto;
 import com.asac6c.reddit.entity.Post;
-import com.asac6c.reddit.exception.PostCustomException;
-import com.asac6c.reddit.exception.PostExceptionType;
 import com.asac6c.reddit.repository.PostRepository;
 import com.asac6c.reddit.repository.PostVoteRepository;
 import com.asac6c.reddit.repository.UserRepository;
@@ -39,7 +36,7 @@ public class PostService {
   }
 
   public PostCreateResponseDto createDraft(PostCreateRequestDto request) {
-    Post.PostBuilder tempPost = Post.instanceForCreate(request);
+    Post.PostBuilder tempPost = Post.configureInstanceForCreate(request);
     Post generatedPost = postRepository.createPost(tempPost);
     return PostCreateResponseDto.from(generatedPost);
   }
@@ -54,20 +51,21 @@ public class PostService {
     postRepository.deletePostById(postId);
   }
 
-    public List<DraftSummaryResponseDto> getDraftListByUserId(Integer userId) {
-        return postRepository.getDraftListByUserId(userId).stream()
-                .map(DraftSummaryResponseDto::from)
-                .toList();
-    }
+  public List<DraftSummaryResponseDto> getDraftListByUserId(Integer userId) {
+    return postRepository.getDraftListByUserId(userId).stream()
+        .map(DraftSummaryResponseDto::from)
+        .toList();
+  }
 
-    public void putPostVote(PostVoteCreateRequestDto voteRequest) {
-        postVoteRepository.savePostVote(voteRequest);
-    }
+  public void putPostVote(PostVoteCreateRequestDto voteRequest) {
+    postVoteRepository.savePostVote(voteRequest);
+  }
 
 
-    public List<GetReadPostsResponseBodyDto> getPostsContents(GetReadPostsRequestBodyDto requestBody) {
-        return postRepository.getPostContents(requestBody);
-    }
+  public List<GetReadPostsResponseBodyDto> getPostsContents(
+      GetReadPostsRequestBodyDto requestBody) {
+    return postRepository.getPostContents(requestBody);
+  }
 
 
 }

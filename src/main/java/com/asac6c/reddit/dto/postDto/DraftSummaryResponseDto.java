@@ -15,10 +15,12 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class DraftSummaryResponseDto {
 
+  Integer postNo;
   String postTitle;
   Date postWriteDate;
 
   public static DraftSummaryResponseDto from(Post response) {
-    return new DraftSummaryResponseDto(response.getPostTitle(), response.getPostWriteDate());
+    return new DraftSummaryResponseDto(response.getPostNo(), response.getPostTitle(),
+        response.getPostWriteDate());
   }
 }
