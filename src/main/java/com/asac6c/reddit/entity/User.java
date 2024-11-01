@@ -1,20 +1,39 @@
 package com.asac6c.reddit.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import com.asac6c.reddit.dto.CreateUserRequestDto;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
-@Getter
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-//Mock
 public class User {
-    Integer user_no;
-    String user_id;
-    String user_pw;
-    String user_nickname;
-    LocalDateTime user_register_date;
+    final Integer userNo;
+    final String userId;
+    @Setter
+    String userPw;
+    @Setter
+    String userNickName;
+    final Date userRegisterDate;
+
+    public static User from(Date userRegisterDate, CreateUserRequestDto createUserRequestDto) {
+        return new User(
+                null,
+                createUserRequestDto.getUserId(),
+                createUserRequestDto.getUserPw(),
+                createUserRequestDto.getUserNickName(),
+                userRegisterDate
+        );
+    }
+
+    public User from(Integer userNo, User user) {
+        return new User(
+                userNo,
+                user.userId,
+                user.userPw,
+                user.userNickName,
+                user.userRegisterDate
+        );
+    }
 }
