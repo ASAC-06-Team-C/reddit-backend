@@ -17,13 +17,23 @@ public class User {
     String userNickName;
     final Date userRegisterDate;
 
-    public static User from(Integer userNo, Date userRegisterDate, CreateUserRequestDto createUserRequestDto) {
+    public static User from(Date userRegisterDate, CreateUserRequestDto createUserRequestDto) {
         return new User(
-                userNo,
+                null,
                 createUserRequestDto.getUserId(),
                 createUserRequestDto.getUserPw(),
                 createUserRequestDto.getUserNickName(),
                 userRegisterDate
+        );
+    }
+
+    public User from(Integer userNo, User user) {
+        return new User(
+                userNo,
+                user.userId,
+                user.userPw,
+                user.userNickName,
+                user.userRegisterDate
         );
     }
 }
