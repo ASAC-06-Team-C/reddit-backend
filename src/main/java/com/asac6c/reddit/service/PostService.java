@@ -31,7 +31,7 @@ public class PostService {
 
     public PostGetResponseDto getPost(Integer postId) {
         Post post = postRepository.findPostById(postId);
-        String authorNickname = userRepository.getUserById(post.getUserNo()).getUser_nickname();
+        String authorNickname = userRepository.getUserById(post.getUserNo()).getUserNickName();
         return PostGetResponseDto.from(post, authorNickname);
     }
 

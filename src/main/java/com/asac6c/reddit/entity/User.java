@@ -14,6 +14,7 @@ public class User {
     @Setter
     String userPw;
     @Setter
+    @Getter
     String userNickName;
     final Date userRegisterDate;
 
