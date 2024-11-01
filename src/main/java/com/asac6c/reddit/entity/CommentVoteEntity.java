@@ -7,18 +7,18 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class CommentVoteEntity {
-
+  
   private final int commentVoteNo;
   private final int userNo;
   private final int commentNo;
-  private final boolean commentVoteType;
-
+  private final String commentVoteType;
+  
   public static CommentVoteEntity from(CommentRequestDTO.Vote voteRequest, int commentVoteNo) {
     return new CommentVoteEntity(
-        commentVoteNo,
-        voteRequest.getUserNo(),
-        voteRequest.getCommentNo(),
-        voteRequest.isCommentVoteType()
+            commentVoteNo,
+            voteRequest.getUserNo(),
+            voteRequest.getCommentNo(),
+            voteRequest.getCommentVoteType()
     );
   }
 }
