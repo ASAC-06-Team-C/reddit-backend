@@ -57,9 +57,7 @@ public class PostController {
     public ResponseEntity<Void> createPostVote(
             @Valid @RequestBody PostVoteUpdateRequestDto postVoteUpdateRequestDto
     ) {
-        if (postVoteUpdateRequestDto.getPostVoteNo() == null) {
-            postService.createPostVote(postVoteUpdateRequestDto);
-        } else if (postVoteUpdateRequestDto.getPostVoteType().equals(PostVoteType.NONE)) {
+        if (postVoteUpdateRequestDto.getPostVoteType().equals(PostVoteType.NONE)) {
             postService.deletePostVote(postVoteUpdateRequestDto);
         } else {
             postService.updatePostVote(postVoteUpdateRequestDto);

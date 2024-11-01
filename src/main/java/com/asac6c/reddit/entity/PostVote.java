@@ -7,6 +7,7 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Builder
 public class PostVote {
     final Integer postVoteNo;
     final Integer userNo;
@@ -14,14 +15,21 @@ public class PostVote {
     @Setter
     PostVoteType postVoteType;
 
-    public static PostVote from(Integer postVoteNo, PostVoteUpdateRequestDto requestDto) {
+    public static PostVote from(Integer postVoteNo, PostVote postvote) {
         return new PostVote(
                 postVoteNo,
+                postvote.getUserNo(),
+                postvote.getPostNo(),
+                postvote.getPostVoteType()
+        );
+    }
+
+    public static PostVote from(PostVoteUpdateRequestDto requestDto) {
+        return new PostVote(
+                null,
                 requestDto.getUserNo(),
                 requestDto.getPostNo(),
                 requestDto.getPostVoteType()
         );
     }
-
-    ;
 }

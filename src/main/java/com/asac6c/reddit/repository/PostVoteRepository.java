@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -15,14 +16,22 @@ public class PostVoteRepository {
     private final Map<Integer, PostVote> postVotes = new HashMap<>();
     private Integer postVoteId = 0;
 
-    public void savePostVote(PostVoteUpdateRequestDto postVote) {
-        postVotes.put(postVoteId, PostVote.from(postVoteId, postVote));
-        postVoteId++;
+    public Optional<PostVote> findByUserNoAndPostNo(Integer userNo, Integer postNo) {
+        for (Map.Entry<Integer, PostVote> postVote : postVotes.entrySet()) {
+            PostVote postVoteObj = postVote.getValue();
+            if (postVoteObj.getUserNo().equals(userNo) && postVoteObj.getPostNo().equals(postNo)) {
+                return Optional.of(postVoteObj);
+            }
+        }
+        return Optional.empty();
     }
 
-    public void updatePostVote(Integer postVoteId, PostVoteType postVoteType) {
-        PostVote postVote = postVotes.get(postVoteId);
-        postVote.setPostVoteType(postVoteType);
+    public void savePostVote(PostVote tempPostVote) {
+        findByUserNoAndPostNo(tempPostVote.getUserNo(), tempPostVote.getPostVoteNo())
+                .ifPresentOrElse(
+                        (postVote) -> postVote.setPostVoteType(tempPostVote.getPostVoteType()),
+                        () -> postVotes.put(postVoteId, PostVote.from(postVoteId++, tempPostVote))
+                );
     }
 
     public void deletePostVote(Integer postVoteId) {
