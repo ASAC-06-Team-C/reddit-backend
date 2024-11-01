@@ -66,7 +66,7 @@ public class PostService {
     }
 
     public void deletePostVote(PostVoteUpdateRequestDto voteRequest) {
-        postVoteRepository.deletePostVote(voteRequest.getPostVoteNo());
+        postVoteRepository.deletePostVote(PostVote.from(voteRequest));
     }
 
 

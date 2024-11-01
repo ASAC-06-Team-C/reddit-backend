@@ -27,14 +27,16 @@ public class PostVoteRepository {
     }
 
     public void savePostVote(PostVote tempPostVote) {
-        findByUserNoAndPostNo(tempPostVote.getUserNo(), tempPostVote.getPostVoteNo())
+        findByUserNoAndPostNo(tempPostVote.getUserNo(), tempPostVote.getPostNo())
                 .ifPresentOrElse(
                         (postVote) -> postVote.setPostVoteType(tempPostVote.getPostVoteType()),
                         () -> postVotes.put(postVoteId, PostVote.from(postVoteId++, tempPostVote))
                 );
     }
 
-    public void deletePostVote(Integer postVoteId) {
-        postVotes.remove(postVoteId);
+    public void deletePostVote(PostVote tempPostVote) {
+        findByUserNoAndPostNo(tempPostVote.getUserNo(), tempPostVote.getPostNo())
+                .ifPresent((postVote) -> postVotes.remove(postVote.getPostVoteNo())
+                );
     }
 }
