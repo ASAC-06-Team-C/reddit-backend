@@ -18,5 +18,5 @@ public class CreateUserRequestDto {
     @NotEmpty
     String userPw;
     @NotEmpty
-    String userNickName;
+    String userNickname;
 }

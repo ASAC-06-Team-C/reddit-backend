@@ -23,12 +23,12 @@ public class User {
                 null,
                 createUserRequestDto.getUserId(),
                 createUserRequestDto.getUserPw(),
-                createUserRequestDto.getUserNickName(),
+                createUserRequestDto.getUserNickname(),
                 userRegisterDate
         );
     }
 
-    public User from(Integer userNo, User user) {
+    public static User from(Integer userNo, User user) {
         return new User(
                 userNo,
                 user.userId,
