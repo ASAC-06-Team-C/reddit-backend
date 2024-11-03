@@ -1,6 +1,10 @@
+FROM gradle:8.5-jdk17 as builder
+WORKDIR /app
+COPY . .
+RUN ["gradle", "clean", "build"]
+
 FROM amazoncorretto:17-alpine
-CMD ["./gradlew", "clean", "build"]
 ARG JAR_FILE=build/libs/*.jar
-COPY ${JAR_FILE} app.jar
+COPY --from=builder /app/${JAR_FILE} app.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "/app.jar"]
