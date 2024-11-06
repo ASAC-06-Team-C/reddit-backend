@@ -57,9 +57,9 @@ jobs:
           port: ${{secrets.KANG_EC2_SSH_PORT}}
           timeout: 60s
           script: |
-            sudo docker-compose rm -s spring_container_service
-            sudo docker-compose rm -s mysql_container_service
+            sudo docker-compose rm -s spring_container_service mysql_container_service
             sudo docker rmi springimage:product
+            sudo docker load -i springimage.tar
             sudo docker-compose up -d spring_container_service mysql_container_service
 
       - name: remove IP from security group
