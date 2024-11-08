@@ -28,7 +28,7 @@ public class Post {
   boolean postDraft;
   Date postWriteDate;
 
-  public static Post.PostBuilder instanceForCreate(PostCreateRequestDto request) {
+  public static Post.PostBuilder configureInstanceForCreate(PostCreateRequestDto request) {
     return Post.builder()
         .userNo(request.getUserNo())
         .communityName("DUMMY")
@@ -38,6 +38,11 @@ public class Post {
         .postCommentCount(0)
         .postDraft(request.isPostDraft())
         .postWriteDate(new Date());
+  }
+
+  public static Post completeInstanceForCreate(Post.PostBuilder builder, Integer postNo) {
+    return builder.postNo(postNo)
+        .build();
   }
 
   public static Post instanceForUpsert(DraftUpsertRequestDto request) {
