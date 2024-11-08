@@ -14,12 +14,6 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @Slf4j
 public class GlobalExceptionHandler {
 
-    private ResponseEntity<ExceptionResponseDto> makeResponse(ExceptionType exceptionType, String cause) {
-        return ResponseEntity
-                .status(exceptionType.getHttpStatus())
-                .body(ExceptionResponseDto.from(exceptionType, cause));
-    }
-
     private ResponseEntity<ExceptionResponseDto> makeResponse(DraftCustomException e) {
         return ResponseEntity
                 .status(e.getExceptionType().getHttpStatus())
@@ -56,13 +50,6 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<ExceptionResponseDto> handleValidationException(MethodArgumentNotValidException e) {
-        ExceptionType exceptionType = ExceptionType.REQUEST_NOT_VALID;
-        String cause = String.format("%s 필드에서 문제 발생", e.getFieldError().getField());
-        return makeResponse(exceptionType, cause);
-    }
-
-    @ExceptionHandler
     public ResponseEntity<ExceptionResponseDto> handleNoMorePostsException(GetPostsCustomException e) {
         GetPostsExceptionType exceptionType = GetPostsExceptionType.NO_MORE_POSTS;
         String cause = "";
@@ -77,19 +64,34 @@ public class GlobalExceptionHandler {
 //    }
 
     @ExceptionHandler
-    public ResponseEntity<ExceptionResponseDto> handlePostException(PostCustomException e) {
-        ExceptionType exceptionType = ExceptionType.POST_NOT_EXIST;
-        String cause = String.format("'%s' id가 존재하지 않습니다.", e.getMessage());
-        return makeResponse(exceptionType, cause);
-    }
-
-    @ExceptionHandler
     public ResponseEntity<ExceptionResponseDto> handleUndefinedException(Exception e) {
         log.error("[ERROR] : " + e.getMessage(), e);
         GetPostsExceptionType exceptionType = GetPostsExceptionType.UNDEFINED_EXCEPTION;
         String cause = "정의되지 않은 오류 입니다.";
         return makeResponse(exceptionType, cause);
     }
+
+    private ResponseEntity<ExceptionResponseDto> makeResponse(ExceptionType exceptionType, String cause) {
+        return ResponseEntity
+                .status(exceptionType.getHttpStatus())
+                .body(ExceptionResponseDto.from(exceptionType, cause));
+    }
+
+
+    @ExceptionHandler
+    public ResponseEntity<ExceptionResponseDto> handleValidationException(MethodArgumentNotValidException e) {
+        ExceptionType exceptionType = ExceptionType.REQUEST_NOT_VALID;
+        String cause = String.format("%s 필드에서 문제 발생", e.getFieldError().getField());
+        return makeResponse(exceptionType, cause);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<ExceptionResponseDto> handlePostException(PostCustomException e) {
+        ExceptionType exceptionType = ExceptionType.POST_NOT_EXIST;
+        String cause = String.format("'%s' id가 존재하지 않습니다.", e.getMessage());
+        return makeResponse(exceptionType, cause);
+    }
+
 
     @ExceptionHandler
     public ResponseEntity<ExceptionResponseDto> handleUnknownException(Exception e) {
