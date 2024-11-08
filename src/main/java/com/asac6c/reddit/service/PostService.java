@@ -36,11 +36,11 @@ public class PostService {
     }
 
 
-  public PostCreateResponseDto createDraft(PostCreateRequestDto request) {
-    Post.PostBuilder tempPost = Post.configureInstanceForCreate(request);
-    Post generatedPost = postRepository.createPost(tempPost);
-    return PostCreateResponseDto.from(generatedPost);
-  }
+    public PostCreateResponseDto createDraft(PostCreateRequestDto request) {
+        Post.PostBuilder tempPost = Post.configureInstanceForCreate(request);
+        Post generatedPost = postRepository.createPost(tempPost);
+        return PostCreateResponseDto.from(generatedPost);
+    }
 
 
     public PostCreateResponseDto createPostByDraft(DraftUpsertRequestDto request) {
@@ -53,21 +53,21 @@ public class PostService {
         postRepository.deletePostById(postId);
     }
 
-  public List<DraftSummaryResponseDto> getDraftListByUserId(Integer userId) {
-    return postRepository.getDraftListByUserId(userId).stream()
-        .map(DraftSummaryResponseDto::from)
-        .toList();
-  }
+    public List<DraftSummaryResponseDto> getDraftListByUserId(Integer userId) {
+        return postRepository.getDraftListByUserId(userId).stream()
+                .map(DraftSummaryResponseDto::from)
+                .toList();
+    }
 
-  public void putPostVote(PostVoteCreateRequestDto voteRequest) {
-    postVoteRepository.savePostVote(voteRequest);
-  }
+    public void putPostVote(PostVoteCreateRequestDto voteRequest) {
+        postVoteRepository.savePostVote(voteRequest);
+    }
 
 
-  public List<GetReadPostsResponseBodyDto> getPostsContents(
-      GetReadPostsRequestBodyDto requestBody) {
-    return postRepository.getPostContents(requestBody);
-  }
+    public List<GetReadPostsResponseBodyDto> getPostsContents(
+            GetReadPostsRequestBodyDto requestBody) {
+        return postRepository.getPostContents(requestBody);
+    }
 
 
 }

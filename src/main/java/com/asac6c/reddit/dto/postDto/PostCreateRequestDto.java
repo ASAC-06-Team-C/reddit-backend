@@ -14,8 +14,8 @@ import lombok.experimental.NonFinal;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class PostCreateRequestDto {
 
-  Integer userNo;
-  String postTitle;
-  String postContent;
-  boolean postDraft;
+    Integer userNo;
+    String postTitle;
+    String postContent;
+    boolean postDraft;
 }

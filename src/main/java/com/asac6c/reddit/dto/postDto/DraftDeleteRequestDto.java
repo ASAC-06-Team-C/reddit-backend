@@ -13,6 +13,6 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class DraftDeleteRequestDto {
 
-  Integer postNo;
-  Integer userNo;
+    Integer postNo;
+    Integer userNo;
 }

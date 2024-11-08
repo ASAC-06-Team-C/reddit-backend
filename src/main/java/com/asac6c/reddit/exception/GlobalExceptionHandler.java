@@ -12,28 +12,28 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 public class GlobalExceptionHandler {
 
-  private ResponseEntity<ExceptionResponseDto> makeResponse(DraftCustomException e) {
-    return ResponseEntity
-        .status(e.getExceptionType().getHttpStatus())
-        .body(ExceptionResponseDto.from(e));
-  }
+    private ResponseEntity<ExceptionResponseDto> makeResponse(DraftCustomException e) {
+        return ResponseEntity
+                .status(e.getExceptionType().getHttpStatus())
+                .body(ExceptionResponseDto.from(e));
+    }
 
-  @ExceptionHandler
-  public ResponseEntity<ExceptionResponseDto> handlePostException(DraftCustomException e) {
-    log.warn("[WARN] : " + e.getMessage(), e);
-    return makeResponse(e);
-  }
+    @ExceptionHandler
+    public ResponseEntity<ExceptionResponseDto> handlePostException(DraftCustomException e) {
+        log.warn("[WARN] : " + e.getMessage(), e);
+        return makeResponse(e);
+    }
 
-  @ExceptionHandler
-  public ResponseEntity<ExceptionResponseDto> handlePostException(RuntimeException e) {
-    log.warn("[WARN] : " + e.getMessage(), e);
-    return ResponseEntity
-        .status(HttpStatus.NOT_FOUND)
-        .body(ExceptionResponseDto.from(e));
-  }
-  // 전자 : Exception을 이용해 response 생성
-  // 후자 : Exception을 보고 이에 맞는 Exception Type을 매핑 후 response 생성
-  
+    @ExceptionHandler
+    public ResponseEntity<ExceptionResponseDto> handlePostException(RuntimeException e) {
+        log.warn("[WARN] : " + e.getMessage(), e);
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ExceptionResponseDto.from(e));
+    }
+    // 전자 : Exception을 이용해 response 생성
+    // 후자 : Exception을 보고 이에 맞는 Exception Type을 매핑 후 response 생성
+
     private ResponseEntity<ExceptionResponseDto> makeResponse(GetPostsExceptionType exceptionType, String cause) {
         return ResponseEntity
                 .status(exceptionType.getHttpStatus())

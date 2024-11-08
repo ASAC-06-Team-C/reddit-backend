@@ -14,19 +14,19 @@ import org.springframework.http.HttpStatus;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class CommentExceptionResponseDto {
-  
-  HttpStatus httpStatus;
-  Integer statusCode;
-  String message;
-  String cause;
-  
-  public static CommentExceptionResponseDto from(CommentExceptionType exceptionType,
-                                                 String cause) {
-    return new CommentExceptionResponseDto(
-            exceptionType.getHttpStatus(),
-            exceptionType.getHttpStatus().value(),
-            exceptionType.getMessage(),
-            cause
-    );
-  }
+
+    HttpStatus httpStatus;
+    Integer statusCode;
+    String message;
+    String cause;
+
+    public static CommentExceptionResponseDto from(CommentExceptionType exceptionType,
+                                                   String cause) {
+        return new CommentExceptionResponseDto(
+                exceptionType.getHttpStatus(),
+                exceptionType.getHttpStatus().value(),
+                exceptionType.getMessage(),
+                cause
+        );
+    }
 }

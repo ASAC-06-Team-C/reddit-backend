@@ -10,7 +10,9 @@ import com.asac6c.reddit.entity.Post;
 import com.asac6c.reddit.exception.DraftCustomException;
 import com.asac6c.reddit.exception.DraftExceptionType;
 import com.asac6c.reddit.repository.PostRepository;
+
 import java.util.List;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -22,33 +24,33 @@ import org.springframework.stereotype.Service;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class DraftService {
 
-  PostRepository postRepository;
+    PostRepository postRepository;
 
-  public PostCreateResponseDto createDraft(PostCreateRequestDto request) {
-    Post.PostBuilder tempPost = Post.configureInstanceForCreate(request);
-    Post generatedPost = postRepository.createPost(tempPost);
-    return PostCreateResponseDto.from(generatedPost);
-  }
+    public PostCreateResponseDto createDraft(PostCreateRequestDto request) {
+        Post.PostBuilder tempPost = Post.configureInstanceForCreate(request);
+        Post generatedPost = postRepository.createPost(tempPost);
+        return PostCreateResponseDto.from(generatedPost);
+    }
 
-  public PostResponseDto getDraftDetailByPostNo(Integer id) {
-    return postRepository.getDraftByPostId(id).map(PostResponseDto::from)
-        .orElseThrow(() -> new DraftCustomException(DraftExceptionType.POST_NOT_EXIST, id));
-  }
+    public PostResponseDto getDraftDetailByPostNo(Integer id) {
+        return postRepository.getDraftByPostId(id).map(PostResponseDto::from)
+                .orElseThrow(() -> new DraftCustomException(DraftExceptionType.POST_NOT_EXIST, id));
+    }
 
-  public List<DraftSummaryResponseDto> getDraftListByUserId(Integer userId) {
-    return postRepository.getDraftListByUserId(userId).stream()
-        .filter(Post::isPostDraft)
-        .map(DraftSummaryResponseDto::from)
-        .toList();
-  }
+    public List<DraftSummaryResponseDto> getDraftListByUserId(Integer userId) {
+        return postRepository.getDraftListByUserId(userId).stream()
+                .filter(Post::isPostDraft)
+                .map(DraftSummaryResponseDto::from)
+                .toList();
+    }
 
-  public List<DraftSummaryResponseDto> upsertDraftDetail(DraftUpsertRequestDto request) {
-    Post postForUpsert = Post.instanceForUpsert(request);
-    postRepository.upsertPostDetail(postForUpsert);
-    return getDraftListByUserId(request.getUserNo());
-  }
+    public List<DraftSummaryResponseDto> upsertDraftDetail(DraftUpsertRequestDto request) {
+        Post postForUpsert = Post.instanceForUpsert(request);
+        postRepository.upsertPostDetail(postForUpsert);
+        return getDraftListByUserId(request.getUserNo());
+    }
 
-  public void deleteDraft(DraftDeleteRequestDto request) {
-    postRepository.deleteDraft(request.getPostNo(), request.getUserNo());
-  }
+    public void deleteDraft(DraftDeleteRequestDto request) {
+        postRepository.deleteDraft(request.getPostNo(), request.getUserNo());
+    }
 }

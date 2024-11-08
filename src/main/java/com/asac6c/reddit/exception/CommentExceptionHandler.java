@@ -11,19 +11,19 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 public class CommentExceptionHandler {
 
-  @ExceptionHandler(CommentCustomException.class)
-  public ResponseEntity<Object> globalExceptionHandler(
-      CommentCustomException commentCustomException) {
-    log.warn(commentCustomException.getMessage());
-    commentCustomException.printStackTrace();
-    return new ResponseEntity<>(new ErrorResponse(commentCustomException.getMessage()),
-        commentCustomException.getHttpStatus());
-  }
+    @ExceptionHandler(CommentCustomException.class)
+    public ResponseEntity<Object> globalExceptionHandler(
+            CommentCustomException commentCustomException) {
+        log.warn(commentCustomException.getMessage());
+        commentCustomException.printStackTrace();
+        return new ResponseEntity<>(new ErrorResponse(commentCustomException.getMessage()),
+                commentCustomException.getHttpStatus());
+    }
 
-  @Getter
-  @RequiredArgsConstructor
-  public static class ErrorResponse {
+    @Getter
+    @RequiredArgsConstructor
+    public static class ErrorResponse {
 
-    private final String message;
-  }
+        private final String message;
+    }
 }

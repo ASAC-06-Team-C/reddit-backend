@@ -7,12 +7,12 @@ import org.springframework.http.HttpStatus;
 @Getter
 @RequiredArgsConstructor
 public class CommentCustomException extends RuntimeException {
-  private final HttpStatus httpStatus;
-  private final String message;
-  
-  public CommentCustomException(CommentExceptionType commentExceptionType) {
-    super(commentExceptionType.getMessage());
-    this.httpStatus = commentExceptionType.getHttpStatus();
-    this.message = commentExceptionType.getMessage();
-  }
+    private final HttpStatus httpStatus;
+    private final String message;
+
+    public CommentCustomException(CommentExceptionType commentExceptionType) {
+        super(commentExceptionType.getMessage());
+        this.httpStatus = commentExceptionType.getHttpStatus();
+        this.message = commentExceptionType.getMessage();
+    }
 }
