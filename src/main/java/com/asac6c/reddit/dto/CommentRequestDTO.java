@@ -1,51 +1,62 @@
 package com.asac6c.reddit.dto;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-
 public class CommentRequestDTO {
-
+  
   @Getter
   @RequiredArgsConstructor
+  @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
   public static class Read {
-
-    private final int post_no;
-    private final String sort_type;
-    private final int post_comment_count;
-    private final int comment_page;
+    @NotNull(message = "postNo은 Null일 수 없습니다.")
+    private final int postNo;
+    private final String sortType;
+    private final int postCommentCount;
+    private final int commentPage;
   }
-
+  
   @Getter
+  @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
   public static class Create {
-
-    private int post_no;
-    private int user_no;
-    private String comment_content;
-    private int comment_mother;
-    private int comment_depth;
+    @NotNull(message = "postNo은 Null일 수 없습니다.")
+    private int postNo;
+    @NotNull(message = "userNo은 Null일 수 없습니다.")
+    private int userNo;
+    private String commentContent;
+    private int commentMother;
+    private int commentDepth;
   }
-
+  
   @Getter
+  @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
   public static class Update {
-
-    private int user_no;
-    private int comment_no;
-    private String comment_content;
+    @NotNull(message = "userNo은 Null일 수 없습니다.")
+    private int userNo;
+    @NotNull(message = "commentNo은 Null일 수 없습니다.")
+    private int commentNo;
+    private String commentContent;
   }
-
+  
   @Getter
+  @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
   public static class Delete {
-
-    private int user_no;
-    private int comment_no;
+    @NotNull(message = "userNo은 Null일 수 없습니다.")
+    private int userNo;
+    @NotNull(message = "commentNo은 Null일 수 없습니다.")
+    private int commentNo;
   }
-
+  
   @Getter
+  @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
   public static class Vote {
-
-    private int user_no;
-    private int comment_no;
-    private boolean comment_vote_type;
+    @NotNull(message = "userNo은 Null일 수 없습니다.")
+    private int userNo;
+    @NotNull(message = "commentNo은 Null일 수 없습니다.")
+    private int commentNo;
+    private String commentVoteType;
   }
 }

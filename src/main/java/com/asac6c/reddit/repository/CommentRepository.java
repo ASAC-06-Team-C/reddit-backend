@@ -1,62 +1,99 @@
 package com.asac6c.reddit.repository;
 
 import com.asac6c.reddit.dto.CommentRequestDTO.Create;
-import com.asac6c.reddit.dto.CommentRequestDTO.Read;
+import com.asac6c.reddit.dto.CommentRequestDTO.Delete;
 import com.asac6c.reddit.dto.CommentRequestDTO.Update;
 import com.asac6c.reddit.dto.CommentRequestDTO.Vote;
 import com.asac6c.reddit.entity.CommentEntity;
 import com.asac6c.reddit.entity.CommentVoteEntity;
-import java.util.ArrayList;
+import com.asac6c.reddit.exception.CommentCustomException;
+import com.asac6c.reddit.exception.CommentExceptionType;
+import org.springframework.stereotype.Repository;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.springframework.stereotype.Repository;
 
 @Repository
 public class CommentRepository {
-
+  
   private final Map<Integer, CommentEntity> commentMap = new HashMap<>();
   private final Map<Integer, CommentVoteEntity> commentVoteMap = new HashMap<>();
-
-  private int comment_no = 1;
-  private int comment_vote_no = 1;
-
-  public List<CommentEntity> getComment(Read readRequest) {
+  
+  private int commentNo = 1;
+  private int commentVoteNo = 1;
+  
+  public List<CommentEntity> getComment(int postNo) {
     return commentMap.values().stream()
-        .filter(comment -> comment.getPost_no() == readRequest.getPost_no())
-        .toList();
+            .filter(comment -> comment.getPostNo() == postNo)
+            .toList();
   }
-
-  public List<CommentEntity> getAllComment() {
-    return new ArrayList<>(commentMap.values());
-  }
-
+  
   public CommentEntity createComment(Create createRequest) {
-    CommentEntity newComment = CommentEntity.from(createRequest, comment_no);
-
-    commentMap.put(comment_no++, newComment);
+    CommentEntity newComment = CommentEntity.from(createRequest, commentNo);
+    
+    commentMap.put(commentNo++, newComment);
     return newComment;
   }
-
+  
   public void updateComment(Update updateRequest) {
-    CommentEntity comment = commentMap.get(updateRequest.getComment_no());
-
-    comment.setComment_content(updateRequest.getComment_content());
+    CommentEntity comment = commentMap.get(updateRequest.getCommentNo());
+    
+    // 댓글 수정 권한
+    if (comment.getUserNo() != updateRequest.getUserNo()) {
+      throw new CommentCustomException(CommentExceptionType.COMMENT_UPDATE_PERMISSION);
+    }
+    
+    comment.setCommentContent(updateRequest.getCommentContent());
   }
-
-  public void deleteComment(int comment_no) {
-    commentMap.remove(comment_no);
+  
+  // 삭제가 아닌 commentDeleted 만 바꿔준다?
+  public void deleteComment(Delete deleteRequest) {
+    CommentEntity comment = commentMap.get(deleteRequest.getCommentNo());
+    
+    // 댓글 삭제 권한
+    if (comment.getUserNo() != deleteRequest.getUserNo()) {
+      throw new CommentCustomException(CommentExceptionType.COMMENT_DELETION_PERMISSION);
+    }
+    
+    comment.setCommentDeleted(true);
+//    commentMap.remove(comment_no);
   }
-
+  
   public void voteComment(Vote voteRequest) {
-    CommentEntity comment = commentMap.get(voteRequest.getComment_no());
-
-    commentVoteMap.put(comment_vote_no, CommentVoteEntity.from(voteRequest, comment_vote_no++));
-
-    int voteCount = voteRequest.isComment_vote_type()
-        ? comment.getComment_vote_count() + 1
-        : comment.getComment_vote_count() - 1;
-
-    comment.setComment_vote_count(voteCount);
+    // 유저 번호에 대한 vote 내역 가져오기
+    CommentVoteEntity voteValid = commentVoteMap.values().stream()
+            .filter(vote -> vote.getUserNo() == voteRequest.getUserNo()
+                    && vote.getCommentNo() == voteRequest.getCommentNo())
+            .findFirst()
+            .orElse(null);
+    
+    // 투표를 하지 않았다면,
+    if (voteValid == null) {
+      CommentVoteEntity newVote = CommentVoteEntity.from(voteRequest, commentVoteNo);
+      newVote.changeVoteType(voteRequest.getCommentVoteType());
+      commentVoteMap.put(commentVoteNo++, newVote);
+    }
+    // 투표를 했다면
+    else {
+      CommentVoteEntity updateVote = CommentVoteEntity.from(voteRequest,
+              voteValid.getCommentVoteNo());
+      updateVote.changeVoteType(voteRequest.getCommentVoteType());
+      commentVoteMap.put(voteValid.getCommentVoteNo(), updateVote);
+    }
+    
+    updateVoteCount(voteRequest);
+  }
+  
+  private void updateVoteCount(Vote voteRequest) {
+    CommentEntity comment = commentMap.get(voteRequest.getCommentNo());
+    
+    int voteCount = commentVoteMap.values().stream()
+            .filter(vote -> vote.getCommentNo() == voteRequest.getCommentNo())
+            .mapToInt(vote -> "UP".equals(vote.getCommentVoteType()) ? 1
+                    : "DOWN".equals(vote.getCommentVoteType()) ? -1 : 0)
+            .sum();
+    
+    comment.setCommentVoteCount(voteCount);
   }
 }
