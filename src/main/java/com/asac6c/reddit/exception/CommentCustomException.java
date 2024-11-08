@@ -1,11 +1,18 @@
 package com.asac6c.reddit.exception;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 
 @Getter
+@RequiredArgsConstructor
 public class CommentCustomException extends RuntimeException {
-
-  public CommentCustomException(String message) {
-    super(message);
+  private final HttpStatus httpStatus;
+  private final String message;
+  
+  public CommentCustomException(CommentExceptionType commentExceptionType) {
+    super(commentExceptionType.getMessage());
+    this.httpStatus = commentExceptionType.getHttpStatus();
+    this.message = commentExceptionType.getMessage();
   }
 }
