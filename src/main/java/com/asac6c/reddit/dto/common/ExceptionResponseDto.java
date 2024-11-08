@@ -4,6 +4,7 @@ package com.asac6c.reddit.dto.common;
 import com.asac6c.reddit.exception.DraftCustomException;
 import com.asac6c.reddit.exception.DraftExceptionType;
 import com.asac6c.reddit.exception.GetPostsExceptionType;
+import com.asac6c.reddit.exception.ExceptionType;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AccessLevel;

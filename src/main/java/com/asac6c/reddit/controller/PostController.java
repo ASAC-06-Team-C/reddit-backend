@@ -3,11 +3,11 @@ package com.asac6c.reddit.controller;
 import com.asac6c.reddit.dto.postDto.DraftUpsertRequestDto;
 import com.asac6c.reddit.dto.postDto.PostCreateRequestDto;
 import com.asac6c.reddit.dto.postDto.PostCreateResponseDto;
-import com.asac6c.reddit.dto.postDto.PostResponseDto;
 import com.asac6c.reddit.dto.PostGetResponseDto;
 import com.asac6c.reddit.dto.GetReadPostsResponseBodyDto;
-import com.asac6c.reddit.dto.PostVoteCreateRequestDto;
+import com.asac6c.reddit.dto.PostVoteUpdateRequestDto;
 import com.asac6c.reddit.dto.GetReadPostsRequestBodyDto;
+import com.asac6c.reddit.entity.PostVoteType;
 import com.asac6c.reddit.service.PostService;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -15,7 +15,6 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -56,9 +55,14 @@ public class PostController {
 
     @PostMapping("/vote")
     public ResponseEntity<Void> createPostVote(
-            @Valid @RequestBody PostVoteCreateRequestDto postVoteCreateRequestDto
+            @Valid @RequestBody PostVoteUpdateRequestDto postVoteUpdateRequestDto
     ) {
-        postService.putPostVote(postVoteCreateRequestDto);
+        if (postVoteUpdateRequestDto.getPostVoteType().equals(PostVoteType.NONE)) {
+            postService.deletePostVote(postVoteUpdateRequestDto);
+        } else {
+            postService.updatePostVote(postVoteUpdateRequestDto);
+        }
+
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

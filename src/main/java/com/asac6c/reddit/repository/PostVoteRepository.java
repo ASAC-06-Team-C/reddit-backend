@@ -1,26 +1,42 @@
 package com.asac6c.reddit.repository;
 
-import com.asac6c.reddit.dto.PostVoteCreateRequestDto;
+import com.asac6c.reddit.dto.PostVoteUpdateRequestDto;
 import com.asac6c.reddit.entity.PostVote;
+import com.asac6c.reddit.entity.PostVoteType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Service
-public class PostVoteRepository implements IPostVoteRepository {
+public class PostVoteRepository {
     private final Map<Integer, PostVote> postVotes = new HashMap<>();
     private Integer postVoteId = 0;
 
-    @Override
-    public void savePostVote(PostVoteCreateRequestDto postVote) {
-        postVotes.put(postVoteId, PostVote.from(postVoteId++, postVote));
+    public Optional<PostVote> findByUserNoAndPostNo(Integer userNo, Integer postNo) {
+        for (Map.Entry<Integer, PostVote> postVote : postVotes.entrySet()) {
+            PostVote postVoteObj = postVote.getValue();
+            if (postVoteObj.getUserNo().equals(userNo) && postVoteObj.getPostNo().equals(postNo)) {
+                return Optional.of(postVoteObj);
+            }
+        }
+        return Optional.empty();
     }
 
-    @Override
-    public void deletePostVote(Integer postVoteId) {
-        postVotes.remove(postVoteId);
+    public void savePostVote(PostVote tempPostVote) {
+        findByUserNoAndPostNo(tempPostVote.getUserNo(), tempPostVote.getPostNo())
+                .ifPresentOrElse(
+                        (postVote) -> postVote.setPostVoteType(tempPostVote.getPostVoteType()),
+                        () -> postVotes.put(postVoteId, PostVote.from(postVoteId++, tempPostVote))
+                );
+    }
+
+    public void deletePostVote(PostVote tempPostVote) {
+        findByUserNoAndPostNo(tempPostVote.getUserNo(), tempPostVote.getPostNo())
+                .ifPresent((postVote) -> postVotes.remove(postVote.getPostVoteNo())
+                );
     }
 }

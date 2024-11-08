@@ -2,13 +2,15 @@ package com.asac6c.reddit.service;
 
 import com.asac6c.reddit.dto.PostGetResponseDto;
 import com.asac6c.reddit.dto.GetReadPostsResponseBodyDto;
-import com.asac6c.reddit.dto.PostVoteCreateRequestDto;
+import com.asac6c.reddit.dto.PostVoteUpdateRequestDto;
 import com.asac6c.reddit.dto.GetReadPostsRequestBodyDto;
 import com.asac6c.reddit.dto.postDto.DraftSummaryResponseDto;
 import com.asac6c.reddit.dto.postDto.DraftUpsertRequestDto;
 import com.asac6c.reddit.dto.postDto.PostCreateRequestDto;
 import com.asac6c.reddit.dto.postDto.PostCreateResponseDto;
 import com.asac6c.reddit.entity.Post;
+import com.asac6c.reddit.entity.PostVote;
+import com.asac6c.reddit.entity.PostVoteType;
 import com.asac6c.reddit.repository.PostRepository;
 import com.asac6c.reddit.repository.PostVoteRepository;
 import com.asac6c.reddit.repository.UserRepository;
@@ -18,6 +20,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -31,8 +34,9 @@ public class PostService {
 
     public PostGetResponseDto getPost(Integer postId) {
         Post post = postRepository.findPostById(postId);
-        String authorNickname = userRepository.getUserById(post.getUserNo()).getUser_nickname();
-        return PostGetResponseDto.from(post, authorNickname);
+        String authorNickname = userRepository.getUserById(post.getUserNo()).getUserNickName();
+        Optional<PostVote> postVote = postVoteRepository.findByUserNoAndPostNo(post.getUserNo(), post.getPostNo());
+        return PostGetResponseDto.from(post, authorNickname, postVote.isPresent() ? postVote.get().getPostVoteType() : PostVoteType.NONE);
     }
 
 
@@ -59,8 +63,12 @@ public class PostService {
                 .toList();
     }
 
-    public void putPostVote(PostVoteCreateRequestDto voteRequest) {
-        postVoteRepository.savePostVote(voteRequest);
+    public void updatePostVote(PostVoteUpdateRequestDto voteRequest) {
+        postVoteRepository.savePostVote(PostVote.from(voteRequest));
+    }
+
+    public void deletePostVote(PostVoteUpdateRequestDto voteRequest) {
+        postVoteRepository.deletePostVote(PostVote.from(voteRequest));
     }
 
 
