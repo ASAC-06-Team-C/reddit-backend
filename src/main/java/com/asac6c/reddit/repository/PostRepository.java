@@ -4,12 +4,15 @@ import com.asac6c.reddit.dto.GetReadPostsResponseBodyDto;
 import com.asac6c.reddit.dto.GetReadPostsRequestBodyDto;
 import com.asac6c.reddit.entity.Post;
 import com.asac6c.reddit.entity.PostVote;
+import com.asac6c.reddit.exception.DraftCustomException;
+import com.asac6c.reddit.exception.DraftExceptionType;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Repository
@@ -44,7 +47,8 @@ public class PostRepository {
         repositoryMap.put(9,
                 new Post(9, 9, "DUMMY", "제목 9", "내용 9", 9, 9, false, new Date(System.currentTimeMillis())));
         repositoryMap.put(10,
-                new Post(10, 10, "DUMMY", "제목 10", "내용 10", 10, 10, false, new Date(System.currentTimeMillis())));
+                new Post(10, 10, "DUMMY", "제목 10", "내용 10", 10, 10, false,
+                        new Date(System.currentTimeMillis())));
     }
 
     public Post findPostById(Integer postId) {
@@ -57,7 +61,7 @@ public class PostRepository {
 
     public Post createPost(Post.PostBuilder postBuilder) {
         Integer generatedNo = ++postId;
-        Post createdPost = postBuilder.postNo(generatedNo).build();
+        Post createdPost = Post.completeInstanceForCreate(postBuilder, generatedNo);
         repositoryMap.put(generatedNo, createdPost);
         return createdPost;
     }
@@ -78,15 +82,16 @@ public class PostRepository {
                 .toList();
     }
 
-    public Post upsertPostDetail(Post entity) {
-        Post retrievedPost = Optional.ofNullable(repositoryMap.get(entity.getPostNo()))
-                .orElseThrow(() -> new IllegalArgumentException("잘못된 접근입니다."));
+    public void upsertPostDetail(Post entity) {
         Integer targetPostNo = entity.getPostNo();
-        if (!entity.getUserNo().equals(retrievedPost.getUserNo())) {
-            throw new IllegalArgumentException("이 사용자에게는 권한이 없습니다.");
+        Post retrievedPost = Optional.ofNullable(repositoryMap.get(targetPostNo))
+                .orElseThrow(
+                        () -> new DraftCustomException(DraftExceptionType.POST_NOT_EXIST, targetPostNo));
+        Integer targetUserNo = retrievedPost.getUserNo();
+        if (!entity.getUserNo().equals(targetUserNo)) {
+            throw new DraftCustomException(DraftExceptionType.USER_HAVE_NO_AUTHORITY, targetUserNo);
         }
         repositoryMap.replace(targetPostNo, entity);
-        return entity;
     }
 
     /**
@@ -106,5 +111,14 @@ public class PostRepository {
             );
         }
         return responseBodies;
+    }
+
+
+    public void deleteDraft(Integer postNo, Integer userNo) {
+        Post targetPost = repositoryMap.get(postNo);
+        if (!targetPost.getUserNo().equals(userNo)) {
+            throw new IllegalArgumentException("잘못된 접근입니다.");
+        }
+        repositoryMap.remove(postNo);
     }
 }

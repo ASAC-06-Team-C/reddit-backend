@@ -13,7 +13,8 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class PostVoteCreateRequestDto {
+public class PostVoteUpdateRequestDto {
+    Integer postVoteNo;
     @NotNull
     Integer postNo;
     @NotNull

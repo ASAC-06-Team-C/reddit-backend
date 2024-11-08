@@ -1,5 +1,9 @@
 package com.asac6c.reddit.dto;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +20,14 @@ import lombok.experimental.FieldDefaults;
 @ToString
 public class GetReadPostsRequestBodyDto {
 
+    @NotBlank
+    @NotNull
+    @NotEmpty
     String sort_type;
+    @Min(0)
+    @NotNull
     Integer pages;
+    @Min(0)
+    @NotNull
     Integer content_count;
 }

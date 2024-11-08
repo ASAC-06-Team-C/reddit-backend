@@ -10,18 +10,18 @@ import lombok.experimental.FieldDefaults;
 
 @Getter
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-@RequiredArgsConstructor(access=AccessLevel.PRIVATE)
-@FieldDefaults(makeFinal=true, level= AccessLevel.PRIVATE)
+@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class PostResponseDto {
-  Integer postNo;
-  String postTitle;
-  String postContent;
-
-  public static PostResponseDto from (Post response){
-    return new PostResponseDto(
-        response.getPostNo(),
-        response.getPostTitle(),
-        response.getPostContent()
-    );
-  }
+    Integer postNo;
+    String postTitle;
+    String postContent;
+  
+    public static PostResponseDto from(Post response) {
+        return new PostResponseDto(
+                response.getPostNo(),
+                response.getPostTitle(),
+                response.getPostContent()
+        );
+    }
 }

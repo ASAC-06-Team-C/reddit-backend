@@ -1,4 +1,4 @@
-package com.asac6c.reddit;
+package com.asac6c.reddit.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -11,7 +11,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:5173")
+                .allowedOrigins("http://reddit-clone.com")
                 .allowedMethods("OPTIONS", "GET", "POST", "PUT", "DELETE");
     }
 }
