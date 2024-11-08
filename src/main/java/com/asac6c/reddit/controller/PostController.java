@@ -31,28 +31,28 @@ public class PostController {
 
     PostService postService;
 
-  @PostMapping("")
-  public ResponseEntity<PostCreateResponseDto> createDraft(
-      @RequestBody PostCreateRequestDto request) {
-    PostCreateResponseDto response = postService.createDraft(request);
-    return ResponseEntity.status(HttpStatus.CREATED).body(response);
-  }
+    @PostMapping("")
+    public ResponseEntity<PostCreateResponseDto> createDraft(
+            @RequestBody PostCreateRequestDto request) {
+        PostCreateResponseDto response = postService.createDraft(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
 
-  @GetMapping(value = "/{post_no}")
-  public ResponseEntity<PostGetResponseDto> getPost(
-      @PathVariable("post_no") Integer post_no
-  ) {
-    PostGetResponseDto post = postService.getPost(post_no);
-    return ResponseEntity.status(HttpStatus.OK).body(post);
-  }
+    @GetMapping(value = "/{post_no}")
+    public ResponseEntity<PostGetResponseDto> getPost(
+            @PathVariable("post_no") Integer post_no
+    ) {
+        PostGetResponseDto post = postService.getPost(post_no);
+        return ResponseEntity.status(HttpStatus.OK).body(post);
+    }
 
-  @DeleteMapping(value = "/{post_no}")
-  public ResponseEntity<Void> deletePost(
-      @PathVariable Integer post_no
-  ) {
-    postService.deletePost(post_no);
-    return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-  }
+    @DeleteMapping(value = "/{post_no}")
+    public ResponseEntity<Void> deletePost(
+            @PathVariable Integer post_no
+    ) {
+        postService.deletePost(post_no);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 
     @PostMapping("/vote")
     public ResponseEntity<Void> createPostVote(
@@ -64,17 +64,17 @@ public class PostController {
 
 
     @GetMapping("")
-    public ResponseEntity<List<GetReadPostsResponseBodyDto>> readPosts(GetReadPostsRequestBodyDto requestBody) {
+    public ResponseEntity<List<GetReadPostsResponseBodyDto>> readPosts(@Valid GetReadPostsRequestBodyDto requestBody) {
 
         List<GetReadPostsResponseBodyDto> response = postService.getPostsContents(requestBody);
 
         return ResponseEntity.ok(response);
     }
 
-  @PutMapping("")
-  public ResponseEntity<PostCreateResponseDto> createPostByDraft(
-      @RequestBody DraftUpsertRequestDto request) {
-    PostCreateResponseDto response = postService.createPostByDraft(request);
-    return ResponseEntity.status(HttpStatus.CREATED).body(response);
-  }
+    @PutMapping("")
+    public ResponseEntity<PostCreateResponseDto> createPostByDraft(
+            @RequestBody DraftUpsertRequestDto request) {
+        PostCreateResponseDto response = postService.createPostByDraft(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
 }

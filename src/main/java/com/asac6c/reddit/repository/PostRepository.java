@@ -6,11 +6,15 @@ import com.asac6c.reddit.entity.Post;
 import com.asac6c.reddit.entity.PostVote;
 import com.asac6c.reddit.exception.DraftCustomException;
 import com.asac6c.reddit.exception.DraftExceptionType;
+import com.asac6c.reddit.exception.GetPostsCustomException;
+import com.asac6c.reddit.exception.GetPostsExceptionType;
+import com.asac6c.reddit.exception.PostCustomException;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Repository
@@ -110,6 +114,7 @@ public class PostRepository {
     }
     return responseBodies;
   }
+
 
   public void deleteDraft(Integer postNo, Integer userNo) {
     Post targetPost = repositoryMap.get(postNo);

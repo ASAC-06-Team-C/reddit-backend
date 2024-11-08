@@ -1,7 +1,9 @@
 package com.asac6c.reddit.dto.common;
 
+
 import com.asac6c.reddit.exception.DraftCustomException;
 import com.asac6c.reddit.exception.DraftExceptionType;
+import com.asac6c.reddit.exception.GetPostsExceptionType;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AccessLevel;
@@ -15,7 +17,7 @@ import org.springframework.http.HttpStatus;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class ExceptionResponseDto {
-
+  
   HttpStatus httpStatus;
   Integer statusCode;
   String message;
@@ -49,3 +51,14 @@ public class ExceptionResponseDto {
     );
   }
 }
+
+    public static ExceptionResponseDto from(GetPostsExceptionType exceptionType, String cause) {
+        return new ExceptionResponseDto(
+                exceptionType.getHttpStatus(),
+                exceptionType.getHttpStatus().value(),
+                exceptionType.getMessage(),
+                cause
+        );
+    }
+}
+

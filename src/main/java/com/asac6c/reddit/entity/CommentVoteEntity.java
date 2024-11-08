@@ -7,17 +7,22 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class CommentVoteEntity {
-  private final int comment_vote_no;
-  private final int user_no;
-  private final int comment_no;
-  private final boolean comment_vote_type;
-  
-  public static CommentVoteEntity from(CommentRequestDTO.Vote voteRequest, int comment_vote_no) {
+
+  private final int commentVoteNo;
+  private final int userNo;
+  private final int commentNo;
+  private String commentVoteType = null;
+
+  public static CommentVoteEntity from(CommentRequestDTO.Vote voteRequest, int commentVoteNo) {
     return new CommentVoteEntity(
-            comment_vote_no,
-            voteRequest.getUser_no(),
-            voteRequest.getComment_no(),
-            voteRequest.isComment_vote_type()
+        commentVoteNo,
+        voteRequest.getUserNo(),
+        voteRequest.getCommentNo()
+//        voteRequest.getCommentVoteType()
     );
+  }
+
+  public void changeVoteType(String commentVoteType) {
+    this.commentVoteType = commentVoteType;
   }
 }

@@ -25,15 +25,16 @@ import java.util.List;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class PostService {
 
-  PostRepository postRepository;
-  PostVoteRepository postVoteRepository;
-  UserRepository userRepository;
+    PostRepository postRepository;
+    PostVoteRepository postVoteRepository;
+    UserRepository userRepository;
 
-  public PostGetResponseDto getPost(Integer postId) {
-    Post post = postRepository.findPostById(postId);
-    String authorNickname = userRepository.getUserById(post.getUserNo()).getUser_nickname();
-    return PostGetResponseDto.from(post, authorNickname);
-  }
+    public PostGetResponseDto getPost(Integer postId) {
+        Post post = postRepository.findPostById(postId);
+        String authorNickname = userRepository.getUserById(post.getUserNo()).getUser_nickname();
+        return PostGetResponseDto.from(post, authorNickname);
+    }
+
 
   public PostCreateResponseDto createDraft(PostCreateRequestDto request) {
     Post.PostBuilder tempPost = Post.configureInstanceForCreate(request);
@@ -41,15 +42,16 @@ public class PostService {
     return PostCreateResponseDto.from(generatedPost);
   }
 
-  public PostCreateResponseDto createPostByDraft(DraftUpsertRequestDto request) {
-    Post requestPost = Post.instanceForUpsert(request);
-    postRepository.upsertPostDetail(requestPost);
-    return PostCreateResponseDto.from(requestPost);
-  }
 
-  public void deletePost(Integer postId) {
-    postRepository.deletePostById(postId);
-  }
+    public PostCreateResponseDto createPostByDraft(DraftUpsertRequestDto request) {
+        Post requestPost = Post.instanceForUpsert(request);
+        postRepository.upsertPostDetail(requestPost);
+        return PostCreateResponseDto.from(requestPost);
+    }
+
+    public void deletePost(Integer postId) {
+        postRepository.deletePostById(postId);
+    }
 
   public List<DraftSummaryResponseDto> getDraftListByUserId(Integer userId) {
     return postRepository.getDraftListByUserId(userId).stream()
