@@ -61,5 +61,13 @@ public class ExceptionResponseDto {
                 cause
         );
     }
-}
 
+    public static ExceptionResponseDto from(ExceptionType exceptionType, String cause) {
+        return new ExceptionResponseDto(
+                exceptionType.getHttpStatus(),
+                exceptionType.getHttpStatus().value(),
+                exceptionType.getMessage(),
+                cause
+        );
+    }
+}
