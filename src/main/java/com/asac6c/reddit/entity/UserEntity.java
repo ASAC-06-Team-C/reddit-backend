@@ -1,37 +1,37 @@
 package com.asac6c.reddit.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
-
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@FieldDefaults(level = AccessLevel.PRIVATE)
-@Table(name = "COMMENT_VOTE")
-public class CommentVoteEntity extends BaseEntity {
+@Table(name = "USER_TEST")
+public class UserEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long commentVoteNo;
+    Long userNo;
 
-    @ManyToOne
-    @JoinColumn(name = "user_no")
-    private UserEntity userEntity;
+    @Column(updatable = false, nullable = false)
+    String userId;
 
-    @ManyToOne
-    @JoinColumn(name = "comment_no")
-    private CommentEntity comment;
+    @Setter
+    @Column(nullable = false)
+    String userPw;
 
-    private VoteType commentVoteType;
+    @Setter
+    @Column(nullable = false)
+    String userNickName;
 
 }

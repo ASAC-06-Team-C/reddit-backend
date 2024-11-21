@@ -1,8 +1,5 @@
 package com.asac6c.reddit.repository;
 
-import com.asac6c.reddit.dto.PostVoteUpdateRequestDto;
-import com.asac6c.reddit.entity.PostVote;
-import com.asac6c.reddit.entity.PostVoteType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +10,7 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class PostVoteRepository {
+
     private final Map<Integer, PostVote> postVotes = new HashMap<>();
     private Integer postVoteId = 0;
 

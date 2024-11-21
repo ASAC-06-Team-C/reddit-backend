@@ -1,7 +1,5 @@
 package com.asac6c.reddit.dto;
 
-import com.asac6c.reddit.entity.Post;
-import com.asac6c.reddit.entity.PostVoteType;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
@@ -15,6 +13,7 @@ import java.util.Date;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PostGetResponseDto {
+
     Integer postNo;
     String postTitle;
     String postContent;
@@ -28,6 +27,7 @@ public class PostGetResponseDto {
     @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Author {
+
         Integer userNo;
         String userNickname;
         PostVoteType isVoted;

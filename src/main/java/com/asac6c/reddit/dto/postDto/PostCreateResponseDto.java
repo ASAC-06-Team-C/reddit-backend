@@ -1,6 +1,5 @@
 package com.asac6c.reddit.dto.postDto;
 
-import com.asac6c.reddit.entity.Post;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
@@ -16,6 +15,7 @@ import lombok.experimental.FieldDefaults;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class PostCreateResponseDto {
+
     Integer postNo;
     String postTitle;
     String postContent;

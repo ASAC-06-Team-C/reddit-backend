@@ -12,26 +12,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Table(name = "COMMENT_VOTE")
-public class CommentVoteEntity extends BaseEntity {
+@Table(name = "POST_VOTE")
+public class PostVoteEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long commentVoteNo;
-
+    Long postVoteNo;
     @ManyToOne
     @JoinColumn(name = "user_no")
-    private UserEntity userEntity;
-
+    UserEntity userEntity;
     @ManyToOne
-    @JoinColumn(name = "comment_no")
-    private CommentEntity comment;
-
-    private VoteType commentVoteType;
+    @JoinColumn(name = "post_no")
+    PostEntity postEntity;
+    VoteType postVoteType;
 
 }

@@ -7,7 +7,6 @@ import com.asac6c.reddit.dto.PostGetResponseDto;
 import com.asac6c.reddit.dto.GetReadPostsResponseBodyDto;
 import com.asac6c.reddit.dto.PostVoteUpdateRequestDto;
 import com.asac6c.reddit.dto.GetReadPostsRequestBodyDto;
-import com.asac6c.reddit.entity.PostVoteType;
 import com.asac6c.reddit.service.PostService;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -68,7 +67,8 @@ public class PostController {
 
 
     @GetMapping("")
-    public ResponseEntity<List<GetReadPostsResponseBodyDto>> readPosts(@Valid GetReadPostsRequestBodyDto requestBody) {
+    public ResponseEntity<List<GetReadPostsResponseBodyDto>> readPosts(
+            @Valid GetReadPostsRequestBodyDto requestBody) {
 
         List<GetReadPostsResponseBodyDto> response = postService.getPostsContents(requestBody);
 

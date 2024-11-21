@@ -6,7 +6,6 @@ import com.asac6c.reddit.dto.postDto.DraftUpsertRequestDto;
 import com.asac6c.reddit.dto.postDto.PostCreateRequestDto;
 import com.asac6c.reddit.dto.postDto.PostCreateResponseDto;
 import com.asac6c.reddit.dto.postDto.PostResponseDto;
-import com.asac6c.reddit.entity.Post;
 import com.asac6c.reddit.exception.DraftCustomException;
 import com.asac6c.reddit.exception.DraftExceptionType;
 import com.asac6c.reddit.repository.PostRepository;

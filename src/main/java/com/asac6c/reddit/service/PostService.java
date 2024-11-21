@@ -8,9 +8,6 @@ import com.asac6c.reddit.dto.postDto.DraftSummaryResponseDto;
 import com.asac6c.reddit.dto.postDto.DraftUpsertRequestDto;
 import com.asac6c.reddit.dto.postDto.PostCreateRequestDto;
 import com.asac6c.reddit.dto.postDto.PostCreateResponseDto;
-import com.asac6c.reddit.entity.Post;
-import com.asac6c.reddit.entity.PostVote;
-import com.asac6c.reddit.entity.PostVoteType;
 import com.asac6c.reddit.repository.PostRepository;
 import com.asac6c.reddit.repository.PostVoteRepository;
 import com.asac6c.reddit.repository.UserRepository;
@@ -35,8 +32,10 @@ public class PostService {
     public PostGetResponseDto getPost(Integer postId) {
         Post post = postRepository.findPostById(postId);
         String authorNickname = userRepository.getUserById(post.getUserNo()).getUserNickName();
-        Optional<PostVote> postVote = postVoteRepository.findByUserNoAndPostNo(post.getUserNo(), post.getPostNo());
-        return PostGetResponseDto.from(post, authorNickname, postVote.isPresent() ? postVote.get().getPostVoteType() : PostVoteType.NONE);
+        Optional<PostVote> postVote = postVoteRepository.findByUserNoAndPostNo(post.getUserNo(),
+                post.getPostNo());
+        return PostGetResponseDto.from(post, authorNickname,
+                postVote.isPresent() ? postVote.get().getPostVoteType() : PostVoteType.NONE);
     }
 
 
