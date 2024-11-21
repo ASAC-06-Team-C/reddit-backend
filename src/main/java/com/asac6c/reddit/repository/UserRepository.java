@@ -2,8 +2,6 @@ package com.asac6c.reddit.repository;
 
 import com.asac6c.reddit.dto.UpdateUserNickNameRequestDto;
 import com.asac6c.reddit.dto.UpdateUserPwRequestDto;
-import com.asac6c.reddit.entity.User;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
@@ -12,6 +10,7 @@ import java.util.Map;
 
 @Repository
 public class UserRepository {
+
     private final Map<Integer, User> users = new HashMap<>();
 
     private Integer userId = 0;
@@ -28,7 +27,8 @@ public class UserRepository {
         return users.values().stream().toList();
     }
 
-    public void updateUserNickName(Integer userNo, UpdateUserNickNameRequestDto updateUserNickNameRequestDto) {
+    public void updateUserNickName(Integer userNo,
+            UpdateUserNickNameRequestDto updateUserNickNameRequestDto) {
         User user = users.get(userNo);
         user.setUserNickName(updateUserNickNameRequestDto.getUserNickName());
     }

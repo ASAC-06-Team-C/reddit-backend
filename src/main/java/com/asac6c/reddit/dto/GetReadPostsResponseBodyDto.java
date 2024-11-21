@@ -1,6 +1,5 @@
 package com.asac6c.reddit.dto;
 
-import com.asac6c.reddit.entity.Post;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AccessLevel;

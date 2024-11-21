@@ -2,7 +2,6 @@ package com.asac6c.reddit.service;
 
 import com.asac6c.reddit.dto.CommentRequestDTO.*;
 import com.asac6c.reddit.dto.CommentResponseDTO;
-import com.asac6c.reddit.entity.CommentEntity;
 import com.asac6c.reddit.exception.CommentCustomException;
 import com.asac6c.reddit.exception.CommentExceptionType;
 import com.asac6c.reddit.repository.CommentRepository;
@@ -32,19 +31,22 @@ public class CommentService {
 
     public CommentResponseDTO createComment(Create createRequest) {
         // 일단. 댓글 내용이 없을 때, 예외처리
-        if (createRequest.getCommentContent() == null || createRequest.getCommentContent().isEmpty()) {
+        if (createRequest.getCommentContent() == null || createRequest.getCommentContent()
+                .isEmpty()) {
             throw new CommentCustomException(CommentExceptionType.COMMENT_CREATE_FAILED);
         }
 
         try {
-            return CommentResponseDTO.from(commentRepository.createComment(createRequest), null, null);
+            return CommentResponseDTO.from(commentRepository.createComment(createRequest), null,
+                    null);
         } catch (Exception e) {
             throw new CommentCustomException(CommentExceptionType.COMMENT_CREATE_FAILED);
         }
     }
 
     public void updateComment(Update updateRequest) {
-        if (updateRequest.getCommentContent() == null || updateRequest.getCommentContent().isEmpty()) {
+        if (updateRequest.getCommentContent() == null || updateRequest.getCommentContent()
+                .isEmpty()) {
             throw new CommentCustomException(CommentExceptionType.COMMENT_UPDATE_FAILED);
         }
 

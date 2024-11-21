@@ -1,6 +1,5 @@
 package com.asac6c.reddit.dto;
 
-import com.asac6c.reddit.entity.CommentEntity;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Getter;
@@ -26,7 +25,7 @@ public class CommentResponseDTO {
     private final boolean commentDeleted;
 
     public static CommentResponseDTO from(CommentEntity commentEntity, String userProfile,
-                                          String userNickname) {
+            String userNickname) {
         return new CommentResponseDTO(
                 commentEntity.getUserNo(),
                 userProfile,

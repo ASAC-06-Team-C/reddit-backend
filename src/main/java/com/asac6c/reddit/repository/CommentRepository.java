@@ -4,8 +4,6 @@ import com.asac6c.reddit.dto.CommentRequestDTO.Create;
 import com.asac6c.reddit.dto.CommentRequestDTO.Delete;
 import com.asac6c.reddit.dto.CommentRequestDTO.Update;
 import com.asac6c.reddit.dto.CommentRequestDTO.Vote;
-import com.asac6c.reddit.entity.CommentEntity;
-import com.asac6c.reddit.entity.CommentVoteEntity;
 import com.asac6c.reddit.exception.CommentCustomException;
 import com.asac6c.reddit.exception.CommentExceptionType;
 import org.springframework.stereotype.Repository;
