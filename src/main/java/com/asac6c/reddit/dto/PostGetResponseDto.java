@@ -1,6 +1,6 @@
 package com.asac6c.reddit.dto;
 
-import com.asac6c.reddit.entity.Post;
+import com.asac6c.reddit.entity.PostEntity;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
@@ -14,7 +14,8 @@ import java.util.Date;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PostGetResponseDto {
-    Integer postNo;
+
+    Long postNo;
     String postTitle;
     String postContent;
     Integer postVoteCount;
@@ -22,16 +23,7 @@ public class PostGetResponseDto {
     Date postWriteDate;
     Author author;
 
-    @Getter
-    @RequiredArgsConstructor
-    @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
-    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-    public static class Author {
-        Integer user_no;
-        String user_nickname;
-    }
-
-    public static PostGetResponseDto from(Post post, String userNickname) {
+    public static PostGetResponseDto from(PostEntity post, String userNickname) {
         return new PostGetResponseDto(
                 post.getPostNo(),
                 post.getPostTitle(),
@@ -40,9 +32,19 @@ public class PostGetResponseDto {
                 post.getPostCommentCount(),
                 post.getPostWriteDate(),
                 new Author(
-                        post.getUserNo(),
+                        post.getUserEntity().getUserNo(),
                         userNickname
                 )
         );
+    }
+
+    @Getter
+    @RequiredArgsConstructor
+    @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+    public static class Author {
+
+        Long user_no;
+        String user_nickname;
     }
 }

@@ -8,7 +8,7 @@ import com.asac6c.reddit.dto.postDto.DraftSummaryResponseDto;
 import com.asac6c.reddit.dto.postDto.DraftUpsertRequestDto;
 import com.asac6c.reddit.dto.postDto.PostCreateRequestDto;
 import com.asac6c.reddit.dto.postDto.PostCreateResponseDto;
-import com.asac6c.reddit.entity.Post;
+import com.asac6c.reddit.entity.PostEntity;
 import com.asac6c.reddit.repository.PostRepository;
 import com.asac6c.reddit.repository.PostVoteRepository;
 import com.asac6c.reddit.repository.UserRepository;
@@ -30,21 +30,22 @@ public class PostService {
     UserRepository userRepository;
 
     public PostGetResponseDto getPost(Integer postId) {
-        Post post = postRepository.findPostById(postId);
-        String authorNickname = userRepository.getUserById(post.getUserNo()).getUser_nickname();
+        PostEntity post = postRepository.findPostById(postId);
+        String authorNickname = userRepository.getUserById(post.getUserEntity().getUserNo()).getUserNickName();
         return PostGetResponseDto.from(post, authorNickname);
     }
 
 
-  public PostCreateResponseDto createDraft(PostCreateRequestDto request) {
-    Post.PostBuilder tempPost = Post.configureInstanceForCreate(request);
-    Post generatedPost = postRepository.createPost(tempPost);
-    return PostCreateResponseDto.from(generatedPost);
-  }
+    public PostCreateResponseDto createDraft(/*PostCreateRequestDto request*/) {
+//        PostEntity.PostBuilder tempPost = null;
+        PostEntity generatedPost = postRepository.createPost();
+        return PostCreateResponseDto.from(generatedPost);
+    }
 
 
     public PostCreateResponseDto createPostByDraft(DraftUpsertRequestDto request) {
-        Post requestPost = Post.instanceForUpsert(request);
+//        Post requestPost = Post.instanceForUpsert(request);
+        PostEntity requestPost = null;
         postRepository.upsertPostDetail(requestPost);
         return PostCreateResponseDto.from(requestPost);
     }
@@ -53,21 +54,21 @@ public class PostService {
         postRepository.deletePostById(postId);
     }
 
-  public List<DraftSummaryResponseDto> getDraftListByUserId(Integer userId) {
-    return postRepository.getDraftListByUserId(userId).stream()
-        .map(DraftSummaryResponseDto::from)
-        .toList();
-  }
+    public List<DraftSummaryResponseDto> getDraftListByUserId(Integer userId) {
+        return postRepository.getDraftListByUserId(userId).stream()
+                .map(DraftSummaryResponseDto::from)
+                .toList();
+    }
 
-  public void putPostVote(PostVoteCreateRequestDto voteRequest) {
-    postVoteRepository.savePostVote(voteRequest);
-  }
+    public void putPostVote(PostVoteCreateRequestDto voteRequest) {
+        postVoteRepository.savePostVote(voteRequest);
+    }
 
 
-  public List<GetReadPostsResponseBodyDto> getPostsContents(
-      GetReadPostsRequestBodyDto requestBody) {
-    return postRepository.getPostContents(requestBody);
-  }
+    public List<GetReadPostsResponseBodyDto> getPostsContents(
+            GetReadPostsRequestBodyDto requestBody) {
+        return postRepository.getPostContents(requestBody);
+    }
 
 
 }

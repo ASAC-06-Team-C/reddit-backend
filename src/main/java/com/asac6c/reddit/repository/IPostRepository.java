@@ -1,12 +1,13 @@
 package com.asac6c.reddit.repository;
 
-import com.asac6c.reddit.entity.Post;
-import com.asac6c.reddit.entity.PostVote;
+import com.asac6c.reddit.entity.PostEntity;
+import com.asac6c.reddit.entity.PostVoteEntity;
 
 public interface IPostRepository {
-    public Post findPostById(Integer postId);
+
+    public PostEntity findPostById(Integer postId);
 
     public void deletePostById(Integer postId);
 
-    public Integer savePostVote(PostVote postVote);
+    public Integer savePostVote(PostVoteEntity postVote);
 }

@@ -34,7 +34,7 @@ public class PostController {
     @PostMapping("")
     public ResponseEntity<PostCreateResponseDto> createDraft(
             @RequestBody PostCreateRequestDto request) {
-        PostCreateResponseDto response = postService.createDraft(request);
+        PostCreateResponseDto response = postService.createDraft(/*request*/);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
