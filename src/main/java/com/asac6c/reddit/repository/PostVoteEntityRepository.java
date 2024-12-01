@@ -1,6 +1,8 @@
 package com.asac6c.reddit.repository;
 
+import com.asac6c.reddit.entity.PostEntity;
 import com.asac6c.reddit.entity.PostVoteEntity;
+import com.asac6c.reddit.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,11 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 public interface PostVoteEntityRepository extends JpaRepository<PostVoteEntity, Long> {
 
     @Transactional
-    Optional<PostVoteEntity> findByUserNoAndPostNo(Long userNo, Long postNo);
+    Optional<PostVoteEntity> findByUserEntityAndPostEntity(UserEntity userNo, PostEntity postNo);
 
     @Transactional
     PostVoteEntity save(PostVoteEntity entity);
 
     @Transactional
-    void deletePostVote(PostVoteEntity entity);
+    void delete(PostVoteEntity entity);
 }

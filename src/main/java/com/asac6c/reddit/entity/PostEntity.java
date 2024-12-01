@@ -30,7 +30,7 @@ public class PostEntity extends BaseEntity {
     Long postNo;
 
     @ManyToOne
-    @JoinColumn(name = "user_no", updatable = false, insertable = false)
+    @JoinColumn(name = "user_no", updatable = false)
     @Setter
     UserEntity userEntity;
     String communityName;
@@ -51,6 +51,19 @@ public class PostEntity extends BaseEntity {
                 0,
                 0,
                 false
+        );
+    }
+
+    public static PostEntity forDraftCreate(PostCreateRequestDto request) {
+        return new PostEntity(
+                null,
+                null,
+                null,
+                request.getPostTitle(),
+                request.getPostContent(),
+                0,
+                0,
+                true
         );
     }
 

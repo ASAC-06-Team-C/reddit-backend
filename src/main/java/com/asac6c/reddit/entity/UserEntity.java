@@ -6,7 +6,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +22,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Getter
-@Table(name = "USER_TEST")
+@Table(name = "USER")
 public class UserEntity extends BaseEntity {
 
     @Id
@@ -36,6 +39,7 @@ public class UserEntity extends BaseEntity {
     @Setter
     @Column(nullable = false)
     String userNickName;
+
 
     public static UserEntity from(CreateUserRequestDto request) {
         return new UserEntity(

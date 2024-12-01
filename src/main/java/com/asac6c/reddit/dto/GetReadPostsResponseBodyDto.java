@@ -1,7 +1,9 @@
 package com.asac6c.reddit.dto;
 
+import com.asac6c.reddit.entity.PostEntity;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -17,20 +19,20 @@ import java.util.Date;
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class GetReadPostsResponseBodyDto {
 
-    Integer userNo;
-    Integer postNo;
+    Long userNo;
+    Long postNo;
     String communityName;
     String postTitle;
     String postContent;
     Integer postVoteCount;
     Integer postCommentCount;
     String isVoted;
-    Date postWriteDate;
+    LocalDateTime postWriteDate;
     Author author;
 
-    public static GetReadPostsResponseBodyDto of(Post post) {
+    public static GetReadPostsResponseBodyDto of(PostEntity post) {
         return new GetReadPostsResponseBodyDto(
-                post.getUserNo(),
+                post.getUserEntity().getUserNo(),
                 post.getPostNo(),
                 post.getCommunityName(),
                 post.getPostTitle(),
@@ -38,10 +40,10 @@ public class GetReadPostsResponseBodyDto {
                 post.getPostVoteCount(),
                 post.getPostCommentCount(),
                 "LIKE",
-                post.getPostWriteDate(),
+                post.getCreatedAt(),
                 new Author(
-                        post.getUserNo(),
-                        "DUMMY_USER"
+                        post.getUserEntity().getUserNo(),
+                        post.getUserEntity().getUserNickName()
                 )
         );
     }
@@ -52,7 +54,7 @@ public class GetReadPostsResponseBodyDto {
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     public static class Author {
 
-        Integer user_no;
+        Long user_no;
         String user_nickname;
     }
 }

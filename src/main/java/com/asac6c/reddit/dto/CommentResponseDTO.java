@@ -1,5 +1,6 @@
 package com.asac6c.reddit.dto;
 
+import com.asac6c.reddit.entity.CommentEntity;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Getter;
@@ -24,20 +25,20 @@ public class CommentResponseDTO {
     private final int postNo;
     private final boolean commentDeleted;
 
-    public static CommentResponseDTO from(CommentEntity commentEntity, String userProfile,
-            String userNickname) {
-        return new CommentResponseDTO(
-                commentEntity.getUserNo(),
-                userProfile,
-                userNickname,
-                commentEntity.getCommentNo(),
-                commentEntity.getCommentVoteCount(),
-                commentEntity.getCommentContent(),
-                commentEntity.getCommentWriteDate(),
-                commentEntity.getCommentDepth(),
-                commentEntity.getCommentMother(),
-                commentEntity.getPostNo(),
-                commentEntity.isCommentDeleted()
-        );
-    }
+//    public static CommentResponseDTO from(CommentEntity commentEntity, String userProfile,
+//            String userNickname) {
+//        return new CommentResponseDTO(
+//                commentEntity.getUserNo(),
+//                userProfile,
+//                userNickname,
+//                commentEntity.getCommentNo(),
+//                commentEntity.getCommentVoteCount(),
+//                commentEntity.getCommentContent(),
+//                commentEntity.getCommentWriteDate(),
+//                commentEntity.getCommentDepth(),
+//                commentEntity.getCommentMother(),
+//                commentEntity.getPostNo(),
+//                commentEntity.isCommentDeleted()
+//        );
+//    }
 }

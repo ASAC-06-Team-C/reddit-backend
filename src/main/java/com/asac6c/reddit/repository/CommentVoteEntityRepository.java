@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CommentVoteRepository extends JpaRepository<CommentVoteEntity, Long> {
+public interface CommentVoteEntityRepository extends JpaRepository<CommentVoteEntity, Long> {
 
 
 }

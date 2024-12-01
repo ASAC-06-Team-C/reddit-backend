@@ -36,21 +36,24 @@ public class GlobalExceptionHandler {
     // 전자 : Exception을 이용해 response 생성
     // 후자 : Exception을 보고 이에 맞는 Exception Type을 매핑 후 response 생성
 
-    private ResponseEntity<ExceptionResponseDto> makeResponse(GetPostsExceptionType exceptionType, String cause) {
+    private ResponseEntity<ExceptionResponseDto> makeResponse(GetPostsExceptionType exceptionType,
+            String cause) {
         return ResponseEntity
                 .status(exceptionType.getHttpStatus())
                 .body(ExceptionResponseDto.from(exceptionType, cause));
     }
 
     @ExceptionHandler
-    public ResponseEntity<ExceptionResponseDto> handleArgumentTypeMismatchException(MethodArgumentNotValidException e) {
+    public ResponseEntity<ExceptionResponseDto> handleArgumentTypeMismatchException(
+            MethodArgumentNotValidException e) {
         GetPostsExceptionType exceptionType = GetPostsExceptionType.ARGUMENT_TYPE_MISMATCH;
         String cause = String.format("파라미터 값 타입이 지정된 것과 다릅니다: %s", e.getFieldError().getField());
         return makeResponse(exceptionType, cause);
     }
 
     @ExceptionHandler
-    public ResponseEntity<ExceptionResponseDto> handleNoMorePostsException(GetPostsCustomException e) {
+    public ResponseEntity<ExceptionResponseDto> handleNoMorePostsException(
+            GetPostsCustomException e) {
         GetPostsExceptionType exceptionType = GetPostsExceptionType.NO_MORE_POSTS;
         String cause = "";
         return makeResponse(exceptionType, cause);
@@ -63,27 +66,27 @@ public class GlobalExceptionHandler {
 //        return makeResponse(exceptionType, cause);
 //    }
 
-    @ExceptionHandler
-    public ResponseEntity<ExceptionResponseDto> handleUndefinedException(Exception e) {
-        log.error("[ERROR] : " + e.getMessage(), e);
-        GetPostsExceptionType exceptionType = GetPostsExceptionType.UNDEFINED_EXCEPTION;
-        String cause = "정의되지 않은 오류 입니다.";
-        return makeResponse(exceptionType, cause);
-    }
+//    @ExceptionHandler
+//    public ResponseEntity<ExceptionResponseDto> handleUndefinedException(Exception e) {
+//        log.error("[ERROR] : " + e.getMessage(), e);
+//        GetPostsExceptionType exceptionType = GetPostsExceptionType.UNDEFINED_EXCEPTION;
+//        String cause = "정의되지 않은 오류 입니다.";
+//        return makeResponse(exceptionType, cause);
+//    }
 
-    private ResponseEntity<ExceptionResponseDto> makeResponse(ExceptionType exceptionType, String cause) {
+    private ResponseEntity<ExceptionResponseDto> makeResponse(ExceptionType exceptionType,
+            String cause) {
         return ResponseEntity
                 .status(exceptionType.getHttpStatus())
                 .body(ExceptionResponseDto.from(exceptionType, cause));
     }
 
-
-    @ExceptionHandler
-    public ResponseEntity<ExceptionResponseDto> handleValidationException(MethodArgumentNotValidException e) {
-        ExceptionType exceptionType = ExceptionType.REQUEST_NOT_VALID;
-        String cause = String.format("%s 필드에서 문제 발생", e.getFieldError().getField());
-        return makeResponse(exceptionType, cause);
-    }
+//    @ExceptionHandler
+//    public ResponseEntity<ExceptionResponseDto> handleValidationException(MethodArgumentNotValidException e) {
+//        ExceptionType exceptionType = ExceptionType.REQUEST_NOT_VALID;
+//        String cause = String.format("%s 필드에서 문제 발생", e.getFieldError().getField());
+//        return makeResponse(exceptionType, cause);
+//    }
 
     @ExceptionHandler
     public ResponseEntity<ExceptionResponseDto> handlePostException(PostCustomException e) {
@@ -95,6 +98,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler
     public ResponseEntity<ExceptionResponseDto> handleUnknownException(Exception e) {
+        log.error(e.getMessage(), e + "이상한에러야");
         ExceptionType exceptionType = ExceptionType.UNKNOWN_ERROR;
         String cause = String.format("%s", e.getCause());
         return makeResponse(exceptionType, cause);

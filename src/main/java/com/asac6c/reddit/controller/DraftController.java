@@ -33,13 +33,13 @@ public class DraftController {
     }
 
     @GetMapping("/{post_no}")
-    public ResponseEntity<PostResponseDto> getDraftDetail(@PathVariable Integer post_no) {
+    public ResponseEntity<PostResponseDto> getDraftDetail(@PathVariable Long post_no) {
         PostResponseDto response = draftService.getDraftDetailByPostNo(post_no);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<DraftSummaryResponseDto>> getDraftList(@RequestParam Integer user_no) {
+    public ResponseEntity<List<DraftSummaryResponseDto>> getDraftList(@RequestParam Long user_no) {
         List<DraftSummaryResponseDto> response = draftService.getDraftListByUserId(user_no);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
