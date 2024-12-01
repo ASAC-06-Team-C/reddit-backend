@@ -1,5 +1,7 @@
 package com.asac6c.reddit.service;
 
+import com.asac6c.reddit.aop.AddDummyUser;
+import com.asac6c.reddit.aop.DummyUserType;
 import com.asac6c.reddit.dto.PostGetResponseDto;
 import com.asac6c.reddit.dto.GetReadPostsResponseBodyDto;
 import com.asac6c.reddit.dto.PostVoteUpdateRequestDto;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@ComponentScan
 public class PostService {
 
     PostEntityRepository postEntityRepository;
@@ -53,21 +57,21 @@ public class PostService {
     }
 
 
+    @AddDummyUser(type = DummyUserType.USER)
     @Transactional
     public PostCreateResponseDto createDraft(PostCreateRequestDto request) {
         PostEntity tempPost = PostEntity.forPostCreate(request);
         // dummy User
-        UserEntity user = userEntityRepository.save(
-                new UserEntity(1L, "asdf", "1234", "dummy"));
-        tempPost.setUserEntity(user);
+        tempPost.setUserNo(1L);
         PostEntity generatedPost = postEntityRepository.save(tempPost);
         return PostCreateResponseDto.from(generatedPost);
     }
 
+    @AddDummyUser(type = DummyUserType.USER)
     @Transactional
     public PostCreateResponseDto createPostByDraft(DraftUpsertRequestDto request) {
         PostEntity requestPost = PostEntity.forSubmitDraft(request);
-        requestPost.setUserEntity(new UserEntity(1L, "asdf", "1234", "dummy"));
+        requestPost.setUserNo(1L);
         postEntityRepository.save(requestPost);
         return PostCreateResponseDto.from(requestPost);
     }

@@ -2,6 +2,7 @@ package com.asac6c.reddit.entity;
 
 import com.asac6c.reddit.dto.postDto.DraftUpsertRequestDto;
 import com.asac6c.reddit.dto.postDto.PostCreateRequestDto;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,9 +31,14 @@ public class PostEntity extends BaseEntity {
     Long postNo;
 
     @ManyToOne
-    @JoinColumn(name = "user_no", updatable = false)
+    @JoinColumn(name = "user_no", updatable = false, insertable = false)
     @Setter
     UserEntity userEntity;
+
+    @Column(name = "user_no")
+    @Setter
+    Long userNo;
+
     String communityName;
     String postTitle;
     @Lob
@@ -43,6 +49,7 @@ public class PostEntity extends BaseEntity {
 
     public static PostEntity forPostCreate(PostCreateRequestDto request) {
         return new PostEntity(
+                null,
                 null,
                 null,
                 null,
@@ -59,6 +66,7 @@ public class PostEntity extends BaseEntity {
                 null,
                 null,
                 null,
+                null,
                 request.getPostTitle(),
                 request.getPostContent(),
                 0,
@@ -72,6 +80,7 @@ public class PostEntity extends BaseEntity {
                 request.getPostNo(),
                 null,
                 null,
+                null,
                 request.getPostTitle(),
                 request.getPostContent(),
                 0,
@@ -83,6 +92,7 @@ public class PostEntity extends BaseEntity {
     public static PostEntity forSubmitDraft(DraftUpsertRequestDto request) {
         return new PostEntity(
                 request.getPostNo(),
+                null,
                 null,
                 null,
                 request.getPostTitle(),

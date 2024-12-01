@@ -1,5 +1,6 @@
 package com.asac6c.reddit.entity;
 
+import com.asac6c.reddit.aop.DummyUserType;
 import com.asac6c.reddit.dto.CreateUserRequestDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -47,6 +48,15 @@ public class UserEntity extends BaseEntity {
                 request.getUserId(),
                 request.getUserPw(),
                 request.getUserNickname()
+        );
+    }
+
+    public static UserEntity from(DummyUserType type) {
+        return new UserEntity(
+                type.getUserNo(),
+                type.getUserId(),
+                type.getPassword(),
+                type.getUserNickname()
         );
     }
 }
