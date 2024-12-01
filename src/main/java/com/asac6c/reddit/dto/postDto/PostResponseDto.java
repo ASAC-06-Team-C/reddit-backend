@@ -1,5 +1,6 @@
 package com.asac6c.reddit.dto.postDto;
 
+import com.asac6c.reddit.entity.PostEntity;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AccessLevel;
@@ -13,11 +14,11 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class PostResponseDto {
 
-    Integer postNo;
+    Long postNo;
     String postTitle;
     String postContent;
 
-    public static PostResponseDto from(Post response) {
+    public static PostResponseDto from(PostEntity response) {
         return new PostResponseDto(
                 response.getPostNo(),
                 response.getPostTitle(),

@@ -8,8 +8,14 @@ import com.asac6c.reddit.dto.postDto.DraftSummaryResponseDto;
 import com.asac6c.reddit.dto.postDto.DraftUpsertRequestDto;
 import com.asac6c.reddit.dto.postDto.PostCreateRequestDto;
 import com.asac6c.reddit.dto.postDto.PostCreateResponseDto;
+import com.asac6c.reddit.entity.PostEntity;
+import com.asac6c.reddit.entity.PostVoteEntity;
+import com.asac6c.reddit.entity.UserEntity;
+import com.asac6c.reddit.entity.VoteType;
+import com.asac6c.reddit.exception.GetPostsCustomException;
+import com.asac6c.reddit.exception.GetPostsExceptionType;
 import com.asac6c.reddit.repository.PostRepository;
-import com.asac6c.reddit.repository.PostVoteRepository;
+import com.asac6c.reddit.repository.PostVoteEntityRepository;
 import com.asac6c.reddit.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @RequiredArgsConstructor
@@ -26,44 +33,49 @@ import java.util.Optional;
 public class PostService {
 
     PostRepository postRepository;
-    PostVoteRepository postVoteRepository;
+    PostVoteEntityRepository postVoteRepository;
     UserRepository userRepository;
 
-    public PostGetResponseDto getPost(Integer postId) {
-        Post post = postRepository.findPostById(postId);
-        String authorNickname = userRepository.getUserById(post.getUserNo()).getUserNickName();
-        Optional<PostVote> postVote = postVoteRepository.findByUserNoAndPostNo(post.getUserNo(),
+    @Transactional
+    public PostGetResponseDto getPost(Long postId) {
+        PostEntity post = postRepository.findByPostNo(postId)
+                .orElseThrow(() -> new GetPostsCustomException(
+                        GetPostsExceptionType.UNDEFINED_EXCEPTION));
+        String authorNickname = userRepository.findByUserNo(post.getUserEntity().getUserNo())
+                .orElseThrow(() -> new GetPostsCustomException(
+                        GetPostsExceptionType.ARGUMENT_TYPE_MISMATCH))
+                .getUserNickName();
+        Optional<PostVoteEntity> postVote = postVoteRepository.findByUserNoAndPostNo(
+                post.getUserNo(),
                 post.getPostNo());
         return PostGetResponseDto.from(post, authorNickname,
-                postVote.isPresent() ? postVote.get().getPostVoteType() : PostVoteType.NONE);
+                postVote.isPresent() ? postVote.get().getPostVoteType() : VoteType.NONE);
     }
 
 
+    @Transactional
     public PostCreateResponseDto createDraft(PostCreateRequestDto request) {
-        Post.PostBuilder tempPost = Post.configureInstanceForCreate(request);
-        Post generatedPost = postRepository.createPost(tempPost);
+        PostEntity tempPost = PostEntity.forPostCreate(request);
+        // dummy User
+        tempPost.setUserEntity(new UserEntity(1L, "asdf", "1234", "dummy"));
+        PostEntity generatedPost = postRepository.save(tempPost);
         return PostCreateResponseDto.from(generatedPost);
     }
 
 
     public PostCreateResponseDto createPostByDraft(DraftUpsertRequestDto request) {
-        Post requestPost = Post.instanceForUpsert(request);
-        postRepository.upsertPostDetail(requestPost);
+        PostEntity requestPost = PostEntity.forSubmitDraft(request);
+        requestPost.setUserEntity(new UserEntity(1L, "asdf", "1234", "dummy"));
+        postRepository.save(requestPost);
         return PostCreateResponseDto.from(requestPost);
     }
 
-    public void deletePost(Integer postId) {
-        postRepository.deletePostById(postId);
-    }
-
-    public List<DraftSummaryResponseDto> getDraftListByUserId(Integer userId) {
-        return postRepository.getDraftListByUserId(userId).stream()
-                .map(DraftSummaryResponseDto::from)
-                .toList();
+    public void deletePost(Long postId) {
+        postRepository.deleteByPostNo(postId);
     }
 
     public void updatePostVote(PostVoteUpdateRequestDto voteRequest) {
-        postVoteRepository.savePostVote(PostVote.from(voteRequest));
+        postVoteRepository.savePostVote(PostVoteEntity.from(voteRequest));
     }
 
     public void deletePostVote(PostVoteUpdateRequestDto voteRequest) {

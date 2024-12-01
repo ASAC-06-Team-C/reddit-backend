@@ -7,6 +7,7 @@ import com.asac6c.reddit.dto.PostGetResponseDto;
 import com.asac6c.reddit.dto.GetReadPostsResponseBodyDto;
 import com.asac6c.reddit.dto.PostVoteUpdateRequestDto;
 import com.asac6c.reddit.dto.GetReadPostsRequestBodyDto;
+import com.asac6c.reddit.entity.VoteType;
 import com.asac6c.reddit.service.PostService;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -38,7 +39,7 @@ public class PostController {
 
     @GetMapping(value = "/{post_no}")
     public ResponseEntity<PostGetResponseDto> getPost(
-            @PathVariable("post_no") Integer post_no
+            @PathVariable("post_no") Long post_no
     ) {
         PostGetResponseDto post = postService.getPost(post_no);
         return ResponseEntity.status(HttpStatus.OK).body(post);
@@ -46,7 +47,7 @@ public class PostController {
 
     @DeleteMapping(value = "/{post_no}")
     public ResponseEntity<Void> deletePost(
-            @PathVariable Integer post_no
+            @PathVariable Long post_no
     ) {
         postService.deletePost(post_no);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -56,7 +57,7 @@ public class PostController {
     public ResponseEntity<Void> createPostVote(
             @Valid @RequestBody PostVoteUpdateRequestDto postVoteUpdateRequestDto
     ) {
-        if (postVoteUpdateRequestDto.getPostVoteType().equals(PostVoteType.NONE)) {
+        if (postVoteUpdateRequestDto.getPostVoteType().equals(VoteType.NONE)) {
             postService.deletePostVote(postVoteUpdateRequestDto);
         } else {
             postService.updatePostVote(postVoteUpdateRequestDto);

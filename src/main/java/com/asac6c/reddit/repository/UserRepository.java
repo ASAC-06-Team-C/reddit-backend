@@ -2,43 +2,28 @@ package com.asac6c.reddit.repository;
 
 import com.asac6c.reddit.dto.UpdateUserNickNameRequestDto;
 import com.asac6c.reddit.dto.UpdateUserPwRequestDto;
+import com.asac6c.reddit.entity.UserEntity;
+import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public class UserRepository {
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
-    private final Map<Integer, User> users = new HashMap<>();
+    @Transactional
+    UserEntity save(UserEntity user);
 
-    private Integer userId = 0;
+    @Transactional
+    Optional<UserEntity> findByUserNo(Long userNo);
 
-    public void createUser(User user) {
-        users.put(userId, User.from(userId++, user));
-    }
+    @Transactional
+    List<UserEntity> findAll();
 
-    public User getUserById(Integer userNo) {
-        return users.get(userNo);
-    }
-
-    public List<User> getAllUser() {
-        return users.values().stream().toList();
-    }
-
-    public void updateUserNickName(Integer userNo,
-            UpdateUserNickNameRequestDto updateUserNickNameRequestDto) {
-        User user = users.get(userNo);
-        user.setUserNickName(updateUserNickNameRequestDto.getUserNickName());
-    }
-
-    public void updateUserPassword(Integer userNo, UpdateUserPwRequestDto updateUserPwRequestDto) {
-        User user = users.get(userNo);
-        user.setUserPw(updateUserPwRequestDto.getUserPw());
-    }
-
-    public void deleteUser(Integer userNo) {
-        users.remove(userNo);
-    }
+    @Transactional
+    void deleteByUserNo(Long userNo);
 }

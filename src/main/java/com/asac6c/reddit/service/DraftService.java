@@ -6,6 +6,7 @@ import com.asac6c.reddit.dto.postDto.DraftUpsertRequestDto;
 import com.asac6c.reddit.dto.postDto.PostCreateRequestDto;
 import com.asac6c.reddit.dto.postDto.PostCreateResponseDto;
 import com.asac6c.reddit.dto.postDto.PostResponseDto;
+import com.asac6c.reddit.entity.PostEntity;
 import com.asac6c.reddit.exception.DraftCustomException;
 import com.asac6c.reddit.exception.DraftExceptionType;
 import com.asac6c.reddit.repository.PostRepository;
@@ -26,13 +27,13 @@ public class DraftService {
     PostRepository postRepository;
 
     public PostCreateResponseDto createDraft(PostCreateRequestDto request) {
-        Post.PostBuilder tempPost = Post.configureInstanceForCreate(request);
-        Post generatedPost = postRepository.createPost(tempPost);
+        PostEntity tempPost = PostEntity.forPostCreate(request);
+        PostEntity generatedPost = postRepository.save(tempPost);
         return PostCreateResponseDto.from(generatedPost);
     }
 
-    public PostResponseDto getDraftDetailByPostNo(Integer id) {
-        return postRepository.getDraftByPostId(id).map(PostResponseDto::from)
+    public PostResponseDto getDraftDetailByPostNo(Long id) {
+        return postRepository.findByPostNo(id).map(PostResponseDto::from)
                 .orElseThrow(() -> new DraftCustomException(DraftExceptionType.POST_NOT_EXIST, id));
     }
 
@@ -45,7 +46,7 @@ public class DraftService {
 
     public List<DraftSummaryResponseDto> upsertDraftDetail(DraftUpsertRequestDto request) {
         Post postForUpsert = Post.instanceForUpsert(request);
-        postRepository.upsertPostDetail(postForUpsert);
+        postRepository.update(postForUpsert);
         return getDraftListByUserId(request.getUserNo());
     }
 

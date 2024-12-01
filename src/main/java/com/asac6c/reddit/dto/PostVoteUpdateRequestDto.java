@@ -1,5 +1,6 @@
 package com.asac6c.reddit.dto;
 
+import com.asac6c.reddit.entity.VoteType;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.constraints.NotNull;
@@ -14,11 +15,11 @@ import lombok.experimental.FieldDefaults;
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class PostVoteUpdateRequestDto {
 
-    Integer postVoteNo;
+    Long postVoteNo;
     @NotNull
-    Integer postNo;
+    Long postNo;
     @NotNull
-    Integer userNo;
+    Long userNo;
     @NotNull
-    PostVoteType postVoteType;
+    VoteType postVoteType;
 }

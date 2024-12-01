@@ -1,6 +1,7 @@
 package com.asac6c.reddit.service;
 
 import com.asac6c.reddit.dto.CreateUserRequestDto;
+import com.asac6c.reddit.entity.UserEntity;
 import com.asac6c.reddit.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class UserService {
     UserRepository userRepository;
 
     public void userRegister(CreateUserRequestDto createUserRequestDto) {
-        User user = User.from(new Date(), createUserRequestDto);
-        userRepository.createUser(user);
+        UserEntity user = UserEntity.from(createUserRequestDto);
+        userRepository.save(user);
     }
 }

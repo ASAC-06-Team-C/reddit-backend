@@ -1,8 +1,10 @@
 package com.asac6c.reddit.dto.postDto;
 
+import com.asac6c.reddit.entity.PostEntity;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import lombok.AccessLevel;
@@ -16,17 +18,17 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class PostCreateResponseDto {
 
-    Integer postNo;
+    Long postNo;
     String postTitle;
     String postContent;
-    Date postWriteDate;
+    LocalDateTime postWriteDate;
 
-    public static PostCreateResponseDto from(Post post) {
+    public static PostCreateResponseDto from(PostEntity post) {
         return new PostCreateResponseDto(
                 post.getPostNo(),
                 post.getPostTitle(),
                 post.getPostContent(),
-                post.getPostWriteDate()
+                post.getCreatedAt()
         );
     }
 }
