@@ -13,7 +13,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 // exclude : 비활성화한 의존성
 @Slf4j
-@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
+@SpringBootApplication(/*exclude = {SecurityAutoConfiguration.class}*/)
 @EnableAspectJAutoProxy
 public class RedditApplication {
 

@@ -57,21 +57,17 @@ public class PostService {
     }
 
 
-    @AddDummyUser(type = DummyUserType.USER)
     @Transactional
     public PostCreateResponseDto createDraft(PostCreateRequestDto request) {
         PostEntity tempPost = PostEntity.forPostCreate(request);
-        // dummy User
-        tempPost.setUserNo(1L);
+        // user 정보도 집어넣어야한다.
         PostEntity generatedPost = postEntityRepository.save(tempPost);
         return PostCreateResponseDto.from(generatedPost);
     }
 
-    @AddDummyUser(type = DummyUserType.USER)
     @Transactional
     public PostCreateResponseDto createPostByDraft(DraftUpsertRequestDto request) {
         PostEntity requestPost = PostEntity.forSubmitDraft(request);
-        requestPost.setUserNo(1L);
         postEntityRepository.save(requestPost);
         return PostCreateResponseDto.from(requestPost);
     }
