@@ -41,8 +41,10 @@ public class PostEntity extends BaseEntity {
 
     String communityName;
     String postTitle;
-    @Lob
+
+    @Column(columnDefinition = "text")
     String postContent;
+
     Integer postVoteCount;
     Integer postCommentCount;
     Boolean postDraft;
@@ -51,7 +53,7 @@ public class PostEntity extends BaseEntity {
         return new PostEntity(
                 null,
                 null,
-                null,
+                request.getUserNo(),
                 null,
                 request.getPostTitle(),
                 request.getPostContent(),
@@ -65,7 +67,7 @@ public class PostEntity extends BaseEntity {
         return new PostEntity(
                 null,
                 null,
-                null,
+                request.getUserNo(),
                 null,
                 request.getPostTitle(),
                 request.getPostContent(),
@@ -79,7 +81,7 @@ public class PostEntity extends BaseEntity {
         return new PostEntity(
                 request.getPostNo(),
                 null,
-                null,
+                request.getUserNo(),
                 null,
                 request.getPostTitle(),
                 request.getPostContent(),
@@ -93,7 +95,7 @@ public class PostEntity extends BaseEntity {
         return new PostEntity(
                 request.getPostNo(),
                 null,
-                null,
+                request.getUserNo(),
                 null,
                 request.getPostTitle(),
                 request.getPostContent(),

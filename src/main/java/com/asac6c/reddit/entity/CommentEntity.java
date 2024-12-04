@@ -1,5 +1,6 @@
 package com.asac6c.reddit.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,7 +30,8 @@ public class CommentEntity extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "user_no")
     UserEntity userEntity;
-    @Lob
+
+    @Column(columnDefinition = "text")
     String commentContent;
     Integer commentVoteCount;
 
