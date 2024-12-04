@@ -48,12 +48,8 @@ public class DraftService {
 
     @Transactional
     public List<DraftSummaryResponseDto> getDraftListByUserId(Long userId) {
-        UserEntity user = userEntityRepository.findByUserNo(userId).orElseThrow(
-                () -> new DraftCustomException(DraftExceptionType.POST_NOT_EXIST,
-                        ""));
-        return postEntityRepository.findAllByUserEntityAndPostDraftIsTrue(user)
+        return postEntityRepository.findAllByUserNoAndPostDraftIsTrue(userId)
                 .stream()
-                .filter(PostEntity::getPostDraft)
                 .map(DraftSummaryResponseDto::from)
                 .toList();
     }

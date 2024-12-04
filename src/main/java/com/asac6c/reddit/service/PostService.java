@@ -33,7 +33,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
-@ComponentScan
 public class PostService {
 
     PostEntityRepository postEntityRepository;
@@ -60,7 +59,6 @@ public class PostService {
     @Transactional
     public PostCreateResponseDto createDraft(PostCreateRequestDto request) {
         PostEntity tempPost = PostEntity.forPostCreate(request);
-        // user 정보도 집어넣어야한다.
         PostEntity generatedPost = postEntityRepository.save(tempPost);
         return PostCreateResponseDto.from(generatedPost);
     }

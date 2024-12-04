@@ -23,6 +23,8 @@ public interface PostEntityRepository extends JpaRepository<PostEntity, Long> {
     @Transactional
     List<PostEntity> findAllByUserEntityAndPostDraftIsTrue(UserEntity entity);
 
+    @Transactional
+    List<PostEntity> findAllByUserNoAndPostDraftIsTrue(Long userNo);
 //    /**
 //     * @param request {String sort_type Integer pages Integer content_count}
 //     * @return PostsResponseBody
