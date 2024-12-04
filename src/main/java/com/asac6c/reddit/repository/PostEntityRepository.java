@@ -2,10 +2,14 @@ package com.asac6c.reddit.repository;
 
 import com.asac6c.reddit.entity.PostEntity;
 import com.asac6c.reddit.entity.UserEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import java.util.*;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 
 @Repository
@@ -25,9 +29,8 @@ public interface PostEntityRepository extends JpaRepository<PostEntity, Long> {
 
     @Transactional
     List<PostEntity> findAllByUserNoAndPostDraftIsTrue(Long userNo);
-//    /**
-//     * @param request {String sort_type Integer pages Integer content_count}
-//     * @return PostsResponseBody
-//     */
-//
+
+    @Transactional
+    Page<PostEntity> findAllOrderByIdDesc(Pageable pageable);
+
 }
