@@ -1,16 +1,11 @@
 package com.asac6c.reddit.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import com.asac6c.reddit.dto.CommentRequestDTO.Create;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
 @Entity
@@ -23,20 +18,36 @@ public class CommentEntity extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long commentNo;
+
     @ManyToOne
     @JoinColumn(name = "post_no")
     PostEntity postEntity;
+
     @ManyToOne
     @JoinColumn(name = "user_no")
     UserEntity userEntity;
-    @Lob
-    String commentContent;
-    Integer commentVoteCount;
 
-    @ManyToOne
-    @JoinColumn(name = "comment_parent")
-    CommentEntity commentParent;
+    @Lob
+    @Setter
+    String commentContent;
+
+    @Setter
+    Integer commentVoteCount;
+    Long commentParent;
     Integer commentDepth;
+
+    @Setter
     Boolean commentDeleted;
 
+    public static CommentEntity create(PostEntity postEntity, UserEntity userEntity, Create createRequest) {
+        CommentEntity comment = new CommentEntity();
+        comment.postEntity = postEntity;
+        comment.userEntity = userEntity;
+        comment.commentContent = createRequest.getCommentContent();
+        comment.commentParent = (long) createRequest.getCommentParent();
+        comment.commentDepth = createRequest.getCommentDepth();
+        comment.commentVoteCount = 0;
+        comment.commentDeleted = false;
+        return comment;
+    }
 }

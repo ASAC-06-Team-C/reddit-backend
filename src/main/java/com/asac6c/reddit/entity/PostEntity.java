@@ -22,7 +22,7 @@ public class PostEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer postNo;
+    Long postNo;
 
     @ManyToOne
     @JoinColumn(name = "user_no")

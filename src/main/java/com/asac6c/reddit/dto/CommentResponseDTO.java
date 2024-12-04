@@ -1,5 +1,6 @@
 package com.asac6c.reddit.dto;
 
+import com.asac6c.reddit.entity.CommentEntity;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Getter;
@@ -12,32 +13,32 @@ import java.time.LocalDateTime;
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class CommentResponseDTO {
 
-    private final int userNo;
+    private final Long userNo;
     private final String userProfile;
     private final String userNickname;
-    private final int commentNo;
-    private final int commentVoteCount;
+    private final Long commentNo;
+    private final Integer commentVoteCount;
     private final String commentContent;
     private final LocalDateTime commentWriteDate;
-    private final int commentDepth;
-    private final int commentMother;
-    private final int postNo;
+    private final Integer commentDepth;
+    private final CommentEntity commentParent;
+    private final Long postNo;
     private final boolean commentDeleted;
 
     public static CommentResponseDTO from(CommentEntity commentEntity, String userProfile,
-            String userNickname) {
+                                          String userNickname) {
         return new CommentResponseDTO(
-                commentEntity.getUserNo(),
+                commentEntity.getUserEntity().getUserNo(),
                 userProfile,
                 userNickname,
                 commentEntity.getCommentNo(),
                 commentEntity.getCommentVoteCount(),
                 commentEntity.getCommentContent(),
-                commentEntity.getCommentWriteDate(),
+                commentEntity.getCreatedAt(),
                 commentEntity.getCommentDepth(),
-                commentEntity.getCommentMother(),
-                commentEntity.getPostNo(),
-                commentEntity.isCommentDeleted()
+                commentEntity.getCommentParent(),
+                commentEntity.getPostEntity().getPostNo(),
+                commentEntity.getCommentDeleted()
         );
     }
 }

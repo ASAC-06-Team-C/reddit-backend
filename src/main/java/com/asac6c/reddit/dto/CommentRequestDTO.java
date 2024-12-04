@@ -27,7 +27,7 @@ public class CommentRequestDTO {
         @NotNull(message = "userNo은 Null일 수 없습니다.")
         private int userNo;
         private String commentContent;
-        private int commentMother;
+        private int commentParent;
         private int commentDepth;
     }
 

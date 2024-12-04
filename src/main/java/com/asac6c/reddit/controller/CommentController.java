@@ -31,7 +31,7 @@ public class CommentController {
                 commentPage
         );
 
-        List<CommentResponseDTO> comment = commentService.getComment(readRequest);
+        List<CommentResponseDTO> comment = commentService.ReadComment(readRequest);
         return ResponseEntity.ok(comment);
     }
 
